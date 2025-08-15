@@ -1,1 +1,3 @@
 # githubstudy
+github勉強会のテストで書いてる2025/08/15
+現在はmainからbranchに切り替えて編集しているとこ21:05
