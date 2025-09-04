@@ -10,6 +10,10 @@ class QuizApp {
     this.countdownTimer = null;
     this.timeRemaining = 12;
     this.demonModeStarted = false;
+    // 鬼モードの元データを保持（常にコマンド実践に限定するためのプール）
+    this.demonPoolOriginal = Array.isArray(QUIZ_QUESTIONS.demon)
+      ? QUIZ_QUESTIONS.demon.slice()
+      : [];
     
     this.init();
   }
@@ -134,20 +138,43 @@ class QuizApp {
   // 鬼モードの問題セットを毎回ランダムに10問作る（初級/中級/上級から）
   buildDemonQuestionSet() {
     try {
+      // コマンド実践に限定: type==='command' または expectedCommand を持つものだけ
       const pool = [];
-      if (Array.isArray(QUIZ_QUESTIONS.beginner)) pool.push(...QUIZ_QUESTIONS.beginner);
-      if (Array.isArray(QUIZ_QUESTIONS.intermediate)) pool.push(...QUIZ_QUESTIONS.intermediate);
-      if (Array.isArray(QUIZ_QUESTIONS.advanced)) pool.push(...QUIZ_QUESTIONS.advanced);
-      
-      // シャッフルして先頭10件を採用
-      const shuffled = pool
+
+      // 既存の鬼モード問題（コマンド実践）をベースにする
+      pool.push(...this.demonPoolOriginal);
+
+      // 将来、他レベルにもコマンド型が追加された場合に備えて取り込む
+      const maybeLevels = ['beginner', 'intermediate', 'advanced'];
+      maybeLevels.forEach((lvl) => {
+        const arr = QUIZ_QUESTIONS[lvl];
+        if (Array.isArray(arr)) {
+          arr.forEach((q) => {
+            if (q && (q.type === 'command' || q.expectedCommand)) {
+              pool.push(q);
+            }
+          });
+        }
+      });
+
+      // 重複を排除（id基準）
+      const seen = new Set();
+      const deduped = pool.filter((q) => {
+        const key = q && q.id ? q.id : JSON.stringify(q);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+      // シャッフルして最大10問を選択（プールが10未満なら全件）
+      const selected = deduped
         .map((item) => ({ item, r: Math.random() }))
         .sort((a, b) => a.r - b.r)
         .map(({ item }) => item)
         .slice(0, 10);
-      
-      // グローバルの問題セットを上書き（このセッション限定で使用）
-      QUIZ_QUESTIONS.demon = shuffled;
+
+      // グローバルの鬼モード問題を上書き（このセッション限定）
+      QUIZ_QUESTIONS.demon = selected;
     } catch (e) {
       // フォールバック：既存の鬼モード問題をそのまま使用
       console.warn('鬼モード問題のランダム化に失敗したため既存セットを使用します', e);
