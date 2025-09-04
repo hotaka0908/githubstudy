@@ -336,13 +336,18 @@ class QuizApp {
     let resultMessage = '';
     let nextLevelAvailable = false;
     
-    if (percentage >= 80) {
-      resultMessage = '🌟 素晴らしい！このレベルをマスターしました！';
-      nextLevelAvailable = true;
-    } else if (percentage >= 60) {
-      resultMessage = '👍 良い感じです！もう少し復習してみましょう。';
+    if (this.currentLevel === 'demon') {
+      // 鬼モードは最終的な正解数を明示
+      resultMessage = `👹 鬼モード結果: ${totalQuestions}問中 ${knownQuestions}問正解`;
     } else {
-      resultMessage = '📚 復習が必要ですが、着実に学習しています！';
+      if (percentage >= 80) {
+        resultMessage = '🌟 素晴らしい！このレベルをマスターしました！';
+        nextLevelAvailable = true;
+      } else if (percentage >= 60) {
+        resultMessage = '👍 良い感じです！もう少し復習してみましょう。';
+      } else {
+        resultMessage = '📚 復習が必要ですが、着実に学習しています！';
+      }
     }
     
     const levelNames = {
