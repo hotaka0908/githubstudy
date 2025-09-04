@@ -6,6 +6,7 @@ const QUIZ_QUESTIONS = {
       type: 'command',
       expectedCommand: 'touch test.js',
       expectedFiles: ['test.js'],
+      hint: 'touchコマンドを使ってファイルを作成します',
       explanation: {
         title: '実践: touchコマンドでファイル作成',
         description: '実際にコマンドを入力してファイルを作成する実践問題です。',
@@ -27,6 +28,7 @@ const QUIZ_QUESTIONS = {
       type: 'command',
       expectedCommand: 'mkdir src',
       expectedFiles: ['src/'],
+      hint: 'mkdirコマンドでディレクトリを作成できます',
       explanation: {
         title: '実践: mkdirコマンドでディレクトリ作成',
         description: '実際にコマンドを入力してディレクトリを作成する実践問題です。',
@@ -48,6 +50,7 @@ const QUIZ_QUESTIONS = {
       type: 'command',
       expectedCommand: 'cat config.json',
       initialFiles: ['config.json'],
+      hint: 'catコマンドでファイル内容を表示できます',
       explanation: {
         title: '実践: catコマンドでファイル内容表示',
         description: '実際にコマンドを入力してファイル内容を確認する実践問題です。',
@@ -70,6 +73,7 @@ const QUIZ_QUESTIONS = {
       expectedCommand: 'cp app.js backup.js',
       initialFiles: ['app.js'],
       expectedFiles: ['app.js', 'backup.js'],
+      hint: 'cpコマンドで「cp コピー元 コピー先」の形で使います',
       explanation: {
         title: '実践: cpコマンドでファイルコピー',
         description: '実際にコマンドを入力してファイルをコピーする実践問題です。',
@@ -91,6 +95,7 @@ const QUIZ_QUESTIONS = {
       type: 'command',
       expectedCommand: 'find . -name "*.js"',
       initialFiles: ['app.js', 'test.js', 'config.json', 'style.css'],
+      hint: 'find . -name でパターン検索ができます。ワイルドカード*を使いましょう',
       explanation: {
         title: '実践: findコマンドでファイル検索',
         description: '実際にコマンドを入力してファイルを検索する実践問題です。',
@@ -113,6 +118,7 @@ const QUIZ_QUESTIONS = {
       type: 'command',
       expectedCommand: 'grep "react" package.json',
       initialFiles: ['package.json'],
+      hint: 'grepコマンドで「grep "検索文字" ファイル名」の形で使います',
       explanation: {
         title: '実践: grepコマンドでテキスト検索',
         description: '実際にコマンドを入力してファイル内のテキストを検索する実践問題です。',
@@ -136,6 +142,7 @@ const QUIZ_QUESTIONS = {
       expectedCommand: 'mkdir current-directory && cd current-directory',
       expectedFiles: ['current-directory/'],
       expectedLocation: 'current-directory',
+      hint: '&&演算子で複数コマンドを連結できます。mkdir と cd を組み合わせましょう',
       explanation: {
         title: '実践: 複合コマンドでディレクトリ作成と移動',
         description: '実際にコマンドを組み合わせてディレクトリ作成と移動を行う実践問題です。',
@@ -159,6 +166,7 @@ const QUIZ_QUESTIONS = {
       expectedCommand: 'echo "Hello World" > index.html',
       expectedFiles: ['index.html'],
       expectedContent: {'index.html': 'Hello World'},
+      hint: 'echoコマンドとリダイレクト(>)を組み合わせてファイルに書き込みます',
       explanation: {
         title: '実践: echoとリダイレクトでファイル作成',
         description: '実際にコマンドを使ってファイルにテキストを書き込む実践問題です。',
@@ -182,6 +190,7 @@ const QUIZ_QUESTIONS = {
       expectedCommand: 'rm temp.txt',
       initialFiles: ['temp.txt', 'important.txt'],
       expectedFiles: ['important.txt'],
+      hint: 'rmコマンドでファイルを削除できます',
       explanation: {
         title: '実践: rmコマンドでファイル削除',
         description: '実際にコマンドを入力してファイルを削除する実践問題です。',
@@ -204,6 +213,7 @@ const QUIZ_QUESTIONS = {
       type: 'command',
       expectedCommand: 'ls -la',
       initialFiles: ['.hidden.txt', 'visible.txt', 'script.js'],
+      hint: 'lsコマンドに-lと-aオプションを組み合わせます',
       explanation: {
         title: '実践: lsコマンドでファイル一覧表示',
         description: '実際にコマンドを入力してファイル一覧を詳細表示する実践問題です。',

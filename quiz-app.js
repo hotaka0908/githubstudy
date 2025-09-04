@@ -65,8 +65,8 @@ class QuizApp {
       this.executeCommand();
     });
     
-    document.getElementById('resetBtn').addEventListener('click', () => {
-      this.resetDemonMode();
+    document.getElementById('hintBtn').addEventListener('click', () => {
+      this.showHint();
     });
     
     document.getElementById('skipBtn').addEventListener('click', () => {
@@ -714,6 +714,27 @@ class QuizApp {
     setTimeout(() => {
       this.nextQuestion();
     }, 1000);
+  }
+  
+  showHint() {
+    const questions = QUIZ_QUESTIONS[this.currentLevel];
+    const currentQuestion = questions[this.currentQuestionIndex];
+    
+    if (currentQuestion.hint) {
+      this.addCommandOutput('💡 ヒント: ' + currentQuestion.hint, 'command-hint');
+    } else {
+      this.addCommandOutput('💡 ヒント: ' + currentQuestion.expectedCommand, 'command-hint');
+    }
+    
+    // ヒントボタンを一時的に無効化
+    const hintBtn = document.getElementById('hintBtn');
+    hintBtn.disabled = true;
+    hintBtn.textContent = '💡 使用済み';
+    
+    setTimeout(() => {
+      hintBtn.disabled = false;
+      hintBtn.textContent = '💡 ヒント';
+    }, 5000);
   }
 }
 

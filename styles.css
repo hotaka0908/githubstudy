@@ -725,6 +725,16 @@ body {
   transform: translateY(-1px);
 }
 
+.terminal-btn.hint-btn {
+  background: #3742fa;
+  color: #ffffff;
+}
+
+.terminal-btn.hint-btn:hover {
+  background: #2f36d4;
+  transform: translateY(-1px);
+}
+
 .command-success {
   color: var(--success);
   font-weight: 600;
@@ -733,6 +743,15 @@ body {
 .command-error {
   color: var(--danger);
   font-weight: 600;
+}
+
+.command-hint {
+  color: #3742fa;
+  font-weight: 600;
+  background: rgba(55, 66, 250, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin: 4px 0;
 }
 
 .file-item {
