@@ -946,6 +946,13 @@ body {
   /* 鬼モード開始時はモード選択を折りたたみ */
   .mobile-collapsed .level-selector { display: none; }
   .mobile-collapsed .subtitle { display: none; }
+  
+  /* より大きなタップ領域とスクロール改善 */
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
   .app-header {
     padding: 16px;
   }
@@ -986,6 +993,7 @@ body {
     max-width: none;
     padding: 16px;
     font-size: 16px;
+    min-height: 50px;
   }
   /* iOSズーム防止とタップ最適化 */
   .command-input { font-size: 16px; }
@@ -998,6 +1006,33 @@ body {
   .explanation-sheet {
     margin: 10px;
     width: calc(100vw - 20px);
+    max-height: 85vh;
+  }
+  
+  .explanation-header {
+    padding: 16px 20px;
+  }
+  
+  .explanation-header h3 {
+    font-size: 18px;
+  }
+  
+  .explanation-content {
+    padding: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  .explanation-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--panel);
+  }
+  
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
   }
   
   .complete-footer {
@@ -1007,7 +1042,11 @@ body {
 
 @media (max-width: 480px) {
   .app-header h1 { font-size: 20px; }
-  .level-btn { padding: 10px 12px; font-size: 13px; }
+  .level-btn { 
+    padding: 10px 12px; 
+    font-size: 13px;
+    min-height: 44px;
+  }
   .quiz-card {
     padding: 20px;
     margin: 10px;
@@ -1017,10 +1056,61 @@ body {
     font-size: 16px;
     padding: 12px;
     word-break: break-word;
+    line-height: 1.4;
+  }
+  
+  .explanation-sheet {
+    margin: 5px;
+    width: calc(100vw - 10px);
+    max-height: 90vh;
+  }
+  
+  .explanation-header {
+    padding: 12px 16px;
+  }
+  
+  .explanation-header h3 {
+    font-size: 16px;
   }
   
   .explanation-content {
     padding: 16px;
+    max-height: 65vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .explanation-footer {
+    padding: 12px 16px;
+  }
+  
+  .secondary-btn, .primary-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+  
+  /* 完了モーダルもモバイル対応 */
+  .complete-sheet {
+    margin: 5px;
+    width: calc(100vw - 10px);
+    max-height: 90vh;
+  }
+  
+  .complete-header {
+    padding: 12px 16px;
+  }
+  
+  .complete-content {
+    padding: 16px;
+    font-size: 14px;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  
+  .complete-footer {
+    padding: 12px 16px;
+    gap: 8px;
   }
   
   .score-number {
