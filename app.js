@@ -124,11 +124,15 @@ function itemCard(it) {
   );
 
   const meta = el("div", { className: "meta" }, (it.tags || []).map(t => el("span", { className: "pill", textContent: t })));
+
+  // どう使うか(例) の簡易サマリー
+  const exampleText = getExampleSummary(it);
+
   const body = el("div", { className: "body" }, [
-    el("div", { innerHTML: `<strong>なぜ:</strong> ${it.why}` }),
-    el("div", { innerHTML: `<strong>何を:</strong> ${it.what}` }),
-    el("div", { innerHTML: `<strong>コツ:</strong> ${it.tips}` }),
-    el("div", { innerHTML: `<strong>練習:</strong> ${it.practice}` }),
+    el("div", { innerHTML: `<strong>よく使うもの:</strong> ${it.title}` }),
+    el("div", { innerHTML: `<strong>なぜ使うか:</strong> ${it.why}` }),
+    el("div", { innerHTML: `<strong>どう使うか(例):</strong> ${exampleText}` }),
+    el("div", { innerHTML: `<strong>一言:</strong> ${it.tips}` }),
     meta
   ]);
 
@@ -259,3 +263,20 @@ function openExample(it) {
   renderBlocks(body, ex);
   overlayEl.classList.add('show');
 }
+
+// どう使うか(例)の短い要約を生成
+function getExampleSummary(it) {
+  try {
+    if (typeof EXAMPLES !== 'undefined' && EXAMPLES[it.id]) {
+      const ex = EXAMPLES[it.id];
+      if (ex.intro) return ex.intro;
+      const b = (ex.blocks || [])[0];
+      if (!b) return it.practice || it.what || '';
+      if (b.kind === 'text') return truncate(b.content, 140);
+      if (b.kind === 'code') return 'コード例あり（「例題を見る」を押してください）';
+    }
+  } catch (_) {}
+  return it.practice || it.what || '';
+}
+
+function truncate(str, n) { return (str && str.length > n) ? (str.slice(0, n) + '…') : str; }
