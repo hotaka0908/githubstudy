@@ -8,7 +8,7 @@ class QuizApp {
     this.fileSystem = new Map();
     this.currentDirectory = '~/practice';
     this.countdownTimer = null;
-    this.timeRemaining = 10;
+    this.timeRemaining = 12;
     
     this.init();
   }
@@ -758,7 +758,7 @@ class QuizApp {
     const fuse = document.getElementById('fuse');
     const spark = document.getElementById('spark');
     
-    this.timeRemaining = 10;
+    this.timeRemaining = 12;
     bombTimer.style.display = 'flex';
     
     // 導火線と火花の初期化
@@ -770,7 +770,7 @@ class QuizApp {
       this.timeRemaining--;
       
       // 爆弾アニメーション更新
-      const progress = ((10 - this.timeRemaining) / 10) * 100;
+      const progress = ((12 - this.timeRemaining) / 12) * 100;
       fuse.style.setProperty('--burn-progress', `${progress}%`);
       spark.style.setProperty('--spark-position', `${progress}%`);
       
