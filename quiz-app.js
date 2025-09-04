@@ -75,10 +75,6 @@ class QuizApp {
       this.showHint();
     });
     
-    document.getElementById('shuffleBtn').addEventListener('click', () => {
-      this.shuffleQuestions();
-    });
-    
     document.getElementById('startShuffleBtn').addEventListener('click', () => {
       this.shuffleQuestions();
     });
