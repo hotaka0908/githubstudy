@@ -3,61 +3,112 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>エンジニア学習マップ（非エンジニア向け）</title>
-    <meta name="description" content="非エンジニアのためのエンジニア学習マップ。絶対に学ぶべき基礎と、頻出スキルを体系的に学べます。学習済みチェックで進捗を保存。" />
+    <title>エンジニア必修知識クイズ</title>
+    <meta name="description" content="エンジニアなら絶対知っておくべき必修知識をクイズ形式で学習。初級・中級・上級の各10問で実践的なスキルを身につけます。" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="app-header">
-      <h1>エンジニア学習マップ</h1>
-      <div class="subtitle">非エンジニア・入門者のための必修と頻出スキル</div>
-      <div class="actions">
-        <div class="search-container">
-          <input id="search" type="search" placeholder="キーワード検索（例: Git, HTTP, 配列）" />
-          <div id="searchResults" class="search-results"></div>
-        </div>
-        <button id="resetProgress" title="全ての学習済みを未完了に戻す">🔄 進捗をリセット</button>
-      </div>
+      <h1>🚀 エンジニア必修知識クイズ</h1>
+      <div class="subtitle">実務で必須のコマンドとツールをマスター</div>
+      
       <div id="progress" class="progress">
         <div class="progress-info">
           <div class="progress-text">
             <span class="progress-main">📚 学習進捗</span>
-            <span class="progress-detail"><span id="progressCount">0</span>/<span id="progressTotal">0</span> 項目完了</span>
+            <span class="progress-detail">
+              <span id="currentLevel">初級</span> - 
+              <span id="currentQuestion">1</span>/10問目
+            </span>
           </div>
-          <div class="progress-percentage"><span id="progressPct">0%</span></div>
+          <div class="progress-percentage">
+            <span id="progressPct">0%</span>
+          </div>
         </div>
         <div class="bar">
-          <div class="fill" style="width:0%"></div>
+          <div class="fill" id="progressBar" style="width:0%"></div>
           <div class="bar-bg"></div>
         </div>
       </div>
+      
+      <div class="level-selector">
+        <button class="level-btn active" data-level="beginner">
+          📚 初級<span class="level-desc">基本コマンド</span>
+        </button>
+        <button class="level-btn" data-level="intermediate">
+          ⚡中級<span class="level-desc">開発ツール</span>
+        </button>
+        <button class="level-btn" data-level="advanced">
+          🔥 上級<span class="level-desc">システム管理</span>
+        </button>
+      </div>
     </header>
 
-    <main class="container">
-      <aside class="sidebar">
-        <h2>カテゴリ</h2>
-        <ul id="categoryList" class="category-list"></ul>
-        <h2>難易度</h2>
-        <div class="chips" id="levelChips"></div>
-        <h2>所要時間</h2>
-        <div class="chips" id="timeChips"></div>
-      </aside>
-      <section class="content">
-        <div id="items" class="items"></div>
-      </section>
+    <main class="quiz-container">
+      <div class="quiz-card" id="quizCard">
+        <div class="question-number">
+          問題 <span id="questionNumber">1</span> / 10
+        </div>
+        
+        <div class="question-content">
+          <h2 id="questionText">loading...</h2>
+        </div>
+        
+        <div class="answer-buttons">
+          <button class="answer-btn know-btn" id="knowBtn">
+            ✅ 知ってる
+          </button>
+          <button class="answer-btn dont-know-btn" id="dontKnowBtn">
+            ❌ 知らない
+          </button>
+        </div>
+      </div>
     </main>
+
+    <!-- 詳細説明モーダル -->
+    <div class="overlay" id="explanationModal">
+      <div class="explanation-sheet">
+        <div class="explanation-header">
+          <h3 id="explanationTitle">詳しい説明</h3>
+          <button class="close-btn" id="closeExplanation">×</button>
+        </div>
+        <div class="explanation-content" id="explanationContent">
+          <!-- 動的に内容が挿入される -->
+        </div>
+        <div class="explanation-footer">
+          <button class="secondary-btn" id="nextFromExplanation">
+            📝 理解した！次へ
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- レベル完了モーダル -->
+    <div class="overlay" id="levelCompleteModal">
+      <div class="complete-sheet">
+        <div class="complete-header">
+          <h3 id="completeTitle">🎉 おめでとうございます！</h3>
+        </div>
+        <div class="complete-content" id="completeContent">
+          <!-- 結果が挿入される -->
+        </div>
+        <div class="complete-footer">
+          <button class="primary-btn" id="nextLevelBtn">次のレベルへ</button>
+          <button class="secondary-btn" id="reviewBtn">復習する</button>
+        </div>
+      </div>
+    </div>
 
     <footer class="app-footer">
       <div>
-        この教材はローカルで動作し、進捗はブラウザの LocalStorage に保存されます。
+        📊 進捗はブラウザに自動保存されます
       </div>
       <div class="tiny">
-        使い方: 検索やフィルタで絞り込み、各カードの「学習済み」を切り替えて進捗を管理。
+        実務で使えるエンジニア知識を効率的に習得
       </div>
     </footer>
 
-    <script src="data.js"></script>
-    <script src="examples.js"></script>
-    <script src="app.js"></script>
+    <script src="quiz-data.js"></script>
+    <script src="quiz-app.js"></script>
   </body>
-  </html>
+</html>
