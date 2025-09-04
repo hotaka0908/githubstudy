@@ -440,6 +440,299 @@ const QUIZ_QUESTIONS = {
         ],
         tips: '存在するディレクトリ名を指定します。'
       }
+    },
+    {
+      id: 'd112',
+      question: 'package.jsonをバックアップとしてpackage.json.bakにコピーしてください',
+      type: 'command',
+      expectedCommand: 'cp package.json package.json.bak',
+      initialFiles: ['package.json'],
+      hint: 'cpコマンドでファイルをコピーできます',
+      explanation: {
+        title: '実践: ファイルバックアップ',
+        description: '重要なファイルをバックアップとして保存します。',
+        usage: [
+          'cp source destination - ファイルをコピー',
+          'cp -r source/ destination/ - ディレクトリを再帰コピー'
+        ],
+        examples: [
+          'cp package.json package.json.bak',
+          'cp config.js config.js.backup'
+        ],
+        tips: 'バックアップファイルには.bakや.backupなどの拡張子をつけるのが一般的です。'
+      }
+    },
+    {
+      id: 'd113',
+      question: '.envファイル内で"API_KEY"を検索してください',
+      type: 'command',
+      expectedCommand: 'grep "API_KEY" .env',
+      initialFiles: ['.env'],
+      hint: 'grepコマンドでファイル内を検索できます',
+      explanation: {
+        title: '実践: 環境変数ファイル検索',
+        description: '設定ファイル内で特定の変数を探します。',
+        usage: [
+          'grep "pattern" filename - ファイル内でパターン検索',
+          'grep -i "pattern" filename - 大文字小文字を無視して検索'
+        ],
+        examples: [
+          'grep "API_KEY" .env',
+          'grep "DATABASE_URL" .env'
+        ],
+        tips: '環境変数の確認は開発時によく行います。'
+      }
+    },
+    {
+      id: 'd114',
+      question: 'dist ディレクトリとその中身を完全に削除してください',
+      type: 'command',
+      expectedCommand: 'rm -r dist',
+      initialFiles: ['dist/', 'dist/index.html', 'dist/main.js'],
+      hint: 'rmコマンドに-rオプションをつけるとディレクトリを削除できます',
+      explanation: {
+        title: '実践: ディレクトリの削除',
+        description: 'ビルド成果物のディレクトリをクリーンアップします。',
+        usage: [
+          'rm -r dirname - ディレクトリを再帰削除',
+          'rm -rf dirname - 確認なしで強制削除'
+        ],
+        examples: [
+          'rm -r dist',
+          'rm -r node_modules',
+          'rm -r build'
+        ],
+        tips: 'distやbuildディレクトリは再生成可能なので削除してもOKです。'
+      }
+    },
+    {
+      id: 'd115',
+      question: 'すべての.logファイルを削除してください',
+      type: 'command',
+      expectedCommand: 'rm *.log',
+      initialFiles: ['app.log', 'error.log', 'debug.log', 'package.json'],
+      hint: 'ワイルドカード(*)を使ってパターンマッチングできます',
+      explanation: {
+        title: '実践: ワイルドカードを使ったファイル削除',
+        description: '特定のパターンのファイルをまとめて削除します。',
+        usage: [
+          'rm *.extension - 特定拡張子のファイルを削除',
+          'rm prefix* - 特定の接頭辞のファイルを削除'
+        ],
+        examples: [
+          'rm *.log',
+          'rm test-*',
+          'rm *.tmp'
+        ],
+        tips: 'ワイルドカードは便利ですが、想定外のファイルを削除しないよう注意が必要です。'
+      }
+    },
+    {
+      id: 'd116',
+      question: 'components ディレクトリを作成し、その中にButton.jsxを作成してください',
+      type: 'command',
+      expectedCommand: 'mkdir components && touch components/Button.jsx',
+      hint: '&&を使って複数コマンドを連結できます',
+      explanation: {
+        title: '実践: React コンポーネント準備',
+        description: 'Reactコンポーネント用のディレクトリとファイルを準備します。',
+        usage: [
+          'command1 && command2 - 前のコマンド成功時に次を実行',
+          'mkdir dir && touch dir/file - ディレクトリ作成後にファイル作成'
+        ],
+        examples: [
+          'mkdir components && touch components/Button.jsx',
+          'mkdir utils && touch utils/api.js'
+        ],
+        tips: '&&演算子で効率的に連続作業ができます。'
+      }
+    },
+    {
+      id: 'd117',
+      question: 'README.mdに"# My Project"という見出しを書き込んでください',
+      type: 'command',
+      expectedCommand: 'echo "# My Project" > README.md',
+      hint: 'echoとリダイレクト(>)でファイルに書き込めます',
+      explanation: {
+        title: '実践: プロジェクト初期化',
+        description: 'プロジェクトのREADMEファイルを初期化します。',
+        usage: [
+          'echo "text" > file - ファイルにテキストを上書き',
+          'echo "text" >> file - ファイルにテキストを追記'
+        ],
+        examples: [
+          'echo "# My Project" > README.md',
+          'echo "## Installation" >> README.md'
+        ],
+        tips: 'Markdownの見出しは#で始めます。'
+      }
+    },
+    {
+      id: 'd118',
+      question: '.gitignoreに"node_modules"を追記してください',
+      type: 'command',
+      expectedCommand: 'echo "node_modules" >> .gitignore',
+      initialFiles: ['.gitignore'],
+      hint: '>>演算子でファイルに追記できます',
+      explanation: {
+        title: '実践: Git設定ファイル更新',
+        description: 'Gitで無視するファイルを.gitignoreに追加します。',
+        usage: [
+          'echo "pattern" >> .gitignore - 無視パターンを追加',
+          'echo "*.log" >> .gitignore - ログファイルを無視'
+        ],
+        examples: [
+          'echo "node_modules" >> .gitignore',
+          'echo ".env" >> .gitignore',
+          'echo "dist/" >> .gitignore'
+        ],
+        tips: 'node_modulesは必ず.gitignoreに追加しましょう。'
+      }
+    },
+    {
+      id: 'd119',
+      question: 'styles ディレクトリ内の*.cssファイルを検索してください',
+      type: 'command',
+      expectedCommand: 'find styles -name "*.css"',
+      initialFiles: ['styles/', 'styles/main.css', 'styles/components.css', 'styles/utils.scss'],
+      hint: 'findコマンドで特定ディレクトリ内を検索できます',
+      explanation: {
+        title: '実践: 特定ディレクトリ内でファイル検索',
+        description: 'stylesディレクトリ内のCSSファイルを探します。',
+        usage: [
+          'find dirname -name "pattern" - 指定ディレクトリ内でファイル検索',
+          'find . -type f -name "*.ext" - 特定拡張子のファイルを検索'
+        ],
+        examples: [
+          'find styles -name "*.css"',
+          'find src -name "*.js"',
+          'find . -name "*.json"'
+        ],
+        tips: 'プロジェクト内の特定ファイルを探すときに便利です。'
+      }
+    },
+    {
+      id: 'd120',
+      question: 'testディレクトリを作成し、その中にapp.test.jsを作成してください',
+      type: 'command',
+      expectedCommand: 'mkdir test && touch test/app.test.js',
+      hint: 'mkdirとtouchを&&で連結します',
+      explanation: {
+        title: '実践: テストファイル準備',
+        description: 'アプリケーションのテストファイルを準備します。',
+        usage: [
+          'mkdir testdir && touch testdir/test.js - テストディレクトリとファイル作成'
+        ],
+        examples: [
+          'mkdir test && touch test/app.test.js',
+          'mkdir __tests__ && touch __tests__/util.test.js'
+        ],
+        tips: 'テストファイルは.test.jsや.spec.jsという命名が一般的です。'
+      }
+    },
+    {
+      id: 'd121',
+      question: 'srcディレクトリ内でclassという文字列を含むファイルを検索してください',
+      type: 'command',
+      expectedCommand: 'grep -r "class" src',
+      initialFiles: ['src/', 'src/App.js', 'src/Component.js'],
+      hint: 'grepの-rオプションでディレクトリを再帰検索できます',
+      explanation: {
+        title: '実践: コードベース内でのパターン検索',
+        description: 'ソースコード内で特定のキーワードを検索します。',
+        usage: [
+          'grep -r "pattern" dirname - ディレクトリ内を再帰検索',
+          'grep -rn "pattern" dirname - 行番号付きで検索'
+        ],
+        examples: [
+          'grep -r "class" src',
+          'grep -r "function" src',
+          'grep -rn "TODO" src'
+        ],
+        tips: 'コードリファクタリングや調査に便利なコマンドです。'
+      }
+    },
+    {
+      id: 'd122',
+      question: 'publicディレクトリからindex.htmlをrootディレクトリにコピーしてください',
+      type: 'command',
+      expectedCommand: 'cp public/index.html .',
+      initialFiles: ['public/', 'public/index.html'],
+      hint: '. は現在のディレクトリを表します',
+      explanation: {
+        title: '実践: ディレクトリ間でのファイルコピー',
+        description: 'サブディレクトリからファイルをルートにコピーします。',
+        usage: [
+          'cp path/to/file . - ファイルを現在のディレクトリにコピー',
+          'cp dir/file newname - コピーしながらリネーム'
+        ],
+        examples: [
+          'cp public/index.html .',
+          'cp src/template.js .',
+          'cp config/prod.json config.json'
+        ],
+        tips: '. は現在のディレクトリを表すショートカットです。'
+      }
+    },
+    {
+      id: 'd123',
+      question: 'assets/images ディレクトリ構造を一度に作成してください',
+      type: 'command',
+      expectedCommand: 'mkdir -p assets/images',
+      hint: 'mkdirの-pオプションで親ディレクトリも同時作成できます',
+      explanation: {
+        title: '実践: 階層ディレクトリの一括作成',
+        description: 'assetsとその下のimagesディレクトリを一度に作成します。',
+        usage: [
+          'mkdir -p path/to/deep/dir - 階層構造を一度に作成',
+          'mkdir -p {dir1,dir2}/subdir - 複数の階層を同時作成'
+        ],
+        examples: [
+          'mkdir -p assets/images',
+          'mkdir -p src/components/ui',
+          'mkdir -p public/css/modules'
+        ],
+        tips: '-pオプションは既存ディレクトリがあってもエラーになりません。'
+      }
+    },
+    {
+      id: 'd124',
+      question: '現在のディレクトリパスを確認してください',
+      type: 'command',
+      expectedCommand: 'pwd',
+      hint: 'pwdコマンドで現在のディレクトリパスを表示できます',
+      explanation: {
+        title: '実践: 現在位置の確認',
+        description: '現在いるディレクトリの絶対パスを確認します。',
+        usage: [
+          'pwd - 現在のディレクトリの絶対パスを表示'
+        ],
+        examples: [
+          'pwd'
+        ],
+        tips: 'ファイル操作前に現在位置を確認する習慣をつけましょう。'
+      }
+    },
+    {
+      id: 'd125',
+      question: 'package-lock.jsonファイルを削除してください',
+      type: 'command',
+      expectedCommand: 'rm package-lock.json',
+      initialFiles: ['package.json', 'package-lock.json', 'node_modules/'],
+      hint: 'rmコマンドでファイルを削除できます',
+      explanation: {
+        title: '実践: ロックファイルの削除',
+        description: 'npm install時に生成されるロックファイルを削除します。',
+        usage: [
+          'rm filename - 指定ファイルを削除'
+        ],
+        examples: [
+          'rm package-lock.json',
+          'rm yarn.lock',
+          'rm composer.lock'
+        ],
+        tips: '依存関係の問題解決時にロックファイルを削除することがあります。'
+      }
     }
   ],
   beginner: [

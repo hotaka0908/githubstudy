@@ -712,29 +712,6 @@ body {
   }
 }
 
-.current-directory {
-  color: var(--accent);
-  font-size: 14px;
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-.file-system {
-  background: var(--chip);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 16px;
-  min-height: 60px;
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.file-system:empty::before {
-  content: '（ファイル・ディレクトリなし）';
-  color: var(--muted);
-  font-style: italic;
-}
 
 .command-line {
   display: flex;
@@ -865,19 +842,6 @@ body {
   margin: 4px 0;
 }
 
-.file-item {
-  display: inline-block;
-  background: rgba(52, 58, 64, 0.1);
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin: 2px;
-  font-size: 12px;
-}
-
-.directory-item {
-  color: var(--accent);
-  font-weight: 600;
-}
 
 /* ========== ボタンスタイル ========== */
 .primary-btn, .secondary-btn {
@@ -1011,8 +975,6 @@ body {
   .score-number {
     font-size: 36px;
   }
-  .file-item { font-size: 11px; }
-  .current-directory { font-size: 13px; }
   .prompt { margin-right: 6px; }
   .command-line { padding: 10px 12px; }
 }
