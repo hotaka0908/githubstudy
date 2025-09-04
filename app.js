@@ -136,15 +136,27 @@ function itemCard(it) {
     meta
   ]);
 
-  const toggleBtn = el("button", { className: done ? "secondary" : "", textContent: done ? "学習済みを解除" : "学習済みにする" });
-  toggleBtn.addEventListener('click', () => {
-    state.progress[it.id] = !state.progress[it.id];
-    saveProgress(state.progress);
-    renderItems();
-    renderProgress();
+  const toggleBtn = el("button", { 
+    className: done ? "secondary" : "", 
+    textContent: done ? "✅ 学習済み" : "📝 学習する" 
+  });
+  
+  toggleBtn.addEventListener('click', (e) => {
+    const btn = e.target;
+    const originalText = btn.textContent;
+    
+    btn.disabled = true;
+    btn.textContent = done ? "解除中..." : "完了中...";
+    
+    setTimeout(() => {
+      state.progress[it.id] = !state.progress[it.id];
+      saveProgress(state.progress);
+      renderItems();
+      renderProgress();
+    }, 300);
   });
 
-  const exampleBtn = el("button", { className: "ghost", textContent: "例題を見る" });
+  const exampleBtn = el("button", { className: "ghost", textContent: "📖 例題を見る" });
   exampleBtn.addEventListener('click', () => openExample(it));
 
   const foot = el("div", { className: "foot" }, [toggleBtn, exampleBtn]);
@@ -165,7 +177,103 @@ function renderItems() {
 
 function setupSearch() {
   const input = $("#search");
-  input.addEventListener('input', () => { state.query = input.value; renderItems(); });
+  const results = $("#searchResults");
+  let debounceTimer;
+
+  input.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    const query = e.target.value.trim();
+    
+    debounceTimer = setTimeout(() => {
+      state.query = query;
+      renderItems();
+      
+      if (query.length > 1) {
+        showSearchSuggestions(query);
+      } else {
+        hideSearchSuggestions();
+      }
+    }, 300);
+  });
+
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length > 1) {
+      showSearchSuggestions(input.value.trim());
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !results.contains(e.target)) {
+      hideSearchSuggestions();
+    }
+  });
+
+  let selectedIndex = -1;
+
+  input.addEventListener('keydown', (e) => {
+    const suggestions = results.querySelectorAll('.search-result-item');
+    
+    if (e.key === 'Escape') {
+      hideSearchSuggestions();
+      input.blur();
+      selectedIndex = -1;
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, suggestions.length - 1);
+      updateSelection(suggestions);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, -1);
+      updateSelection(suggestions);
+    } else if (e.key === 'Enter' && selectedIndex >= 0 && suggestions[selectedIndex]) {
+      e.preventDefault();
+      suggestions[selectedIndex].click();
+      selectedIndex = -1;
+    }
+  });
+
+  function updateSelection(suggestions) {
+    suggestions.forEach((item, index) => {
+      item.classList.toggle('selected', index === selectedIndex);
+    });
+  }
+}
+
+function showSearchSuggestions(query) {
+  const results = $("#searchResults");
+  const items = allItems();
+  const matches = items.filter(item => {
+    const searchText = [item.title, item.category, ...(item.tags || [])].join(' ').toLowerCase();
+    return searchText.includes(query.toLowerCase());
+  }).slice(0, 5);
+
+  if (matches.length === 0) {
+    hideSearchSuggestions();
+    return;
+  }
+
+  results.innerHTML = '';
+  matches.forEach(item => {
+    const div = el('div', { className: 'search-result-item' });
+    div.innerHTML = `
+      <div class="title">${item.title}</div>
+      <div class="category">${item.category} · ${item.level}</div>
+    `;
+    div.addEventListener('click', () => {
+      $("#search").value = item.title;
+      state.query = item.title;
+      renderItems();
+      hideSearchSuggestions();
+    });
+    results.appendChild(div);
+  });
+  
+  results.classList.add('show');
+}
+
+function hideSearchSuggestions() {
+  const results = $("#searchResults");
+  results.classList.remove('show');
 }
 
 function setupReset() {

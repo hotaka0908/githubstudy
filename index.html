@@ -12,12 +12,24 @@
       <h1>エンジニア学習マップ</h1>
       <div class="subtitle">非エンジニア・入門者のための必修と頻出スキル</div>
       <div class="actions">
-        <input id="search" type="search" placeholder="キーワード検索（例: Git, HTTP, 配列）" />
-        <button id="resetProgress" title="全ての学習済みを未完了に戻す">進捗をリセット</button>
+        <div class="search-container">
+          <input id="search" type="search" placeholder="キーワード検索（例: Git, HTTP, 配列）" />
+          <div id="searchResults" class="search-results"></div>
+        </div>
+        <button id="resetProgress" title="全ての学習済みを未完了に戻す">🔄 進捗をリセット</button>
       </div>
       <div id="progress" class="progress">
-        <div class="bar"><span class="fill" style="width:0%"></span></div>
-        <div class="label"><span id="progressCount">0</span>/<span id="progressTotal">0</span> 完了（<span id="progressPct">0%</span>）</div>
+        <div class="progress-info">
+          <div class="progress-text">
+            <span class="progress-main">📚 学習進捗</span>
+            <span class="progress-detail"><span id="progressCount">0</span>/<span id="progressTotal">0</span> 項目完了</span>
+          </div>
+          <div class="progress-percentage"><span id="progressPct">0%</span></div>
+        </div>
+        <div class="bar">
+          <div class="fill" style="width:0%"></div>
+          <div class="bar-bg"></div>
+        </div>
       </div>
     </header>
 
