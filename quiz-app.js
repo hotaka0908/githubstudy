@@ -833,7 +833,7 @@ class QuizApp {
     
     setTimeout(() => {
       hintBtn.disabled = false;
-      hintBtn.textContent = '💡 ヒント';
+      hintBtn.textContent = 'ヒント(del×2)';
     }, 5000);
   }
   
