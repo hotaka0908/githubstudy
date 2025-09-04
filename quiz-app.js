@@ -7,6 +7,8 @@ class QuizApp {
     this.progress = this.loadProgress();
     this.fileSystem = new Map();
     this.currentDirectory = '~/practice';
+    this.countdownTimer = null;
+    this.timeRemaining = 10;
     
     this.init();
   }
@@ -61,16 +63,8 @@ class QuizApp {
     });
     
     // 鬼モード用イベント
-    document.getElementById('executeBtn').addEventListener('click', () => {
-      this.executeCommand();
-    });
-    
     document.getElementById('hintBtn').addEventListener('click', () => {
       this.showHint();
-    });
-    
-    document.getElementById('skipBtn').addEventListener('click', () => {
-      this.skipDemonQuestion();
     });
     
     document.getElementById('commandInput').addEventListener('keydown', (e) => {
@@ -406,6 +400,9 @@ class QuizApp {
     this.clearCommandOutput();
     document.getElementById('commandInput').value = '';
     document.getElementById('commandInput').focus();
+    
+    // カウントダウン開始
+    this.startCountdown();
   }
   
   resetDemonMode() {
@@ -437,6 +434,7 @@ class QuizApp {
     
     // 正解判定
     if (result.success && this.checkAnswer(input, currentQuestion)) {
+      this.stopCountdown(); // カウントダウンを停止
       setTimeout(() => {
         this.addCommandOutput('✅ 正解！次の問題に進みます。', 'command-success');
         setTimeout(() => {
@@ -700,6 +698,8 @@ class QuizApp {
     const questions = QUIZ_QUESTIONS[this.currentLevel];
     const currentQuestion = questions[this.currentQuestionIndex];
     
+    this.stopCountdown(); // カウントダウンを停止
+    
     // スキップしたことを記録
     if (!this.progress[this.currentLevel]) {
       this.progress[this.currentLevel] = {};
@@ -735,6 +735,116 @@ class QuizApp {
       hintBtn.disabled = false;
       hintBtn.textContent = '💡 ヒント';
     }, 5000);
+  }
+  
+  // カウントダウン機能
+  startCountdown() {
+    // 既存のタイマーをクリア
+    this.stopCountdown();
+    
+    // 爆弾タイマー表示
+    const bombTimer = document.getElementById('bombTimer');
+    const fuse = document.getElementById('fuse');
+    const spark = document.getElementById('spark');
+    
+    this.timeRemaining = 10;
+    bombTimer.style.display = 'flex';
+    
+    // 導火線と火花の初期化
+    fuse.style.setProperty('--burn-progress', '0%');
+    spark.style.setProperty('--spark-position', '0%');
+    
+    // カウントダウン開始
+    this.countdownTimer = setInterval(() => {
+      this.timeRemaining--;
+      
+      // 爆弾アニメーション更新
+      const progress = ((10 - this.timeRemaining) / 10) * 100;
+      fuse.style.setProperty('--burn-progress', `${progress}%`);
+      spark.style.setProperty('--spark-position', `${progress}%`);
+      
+      // 緊迫想を演出（残り3秒以下でアニメーション速度アップ）
+      const bomb = document.querySelector('.bomb');
+      if (this.timeRemaining <= 3) {
+        bomb.style.animationDuration = '0.05s';
+        spark.style.fontSize = '16px';
+      } else if (this.timeRemaining <= 5) {
+        bomb.style.animationDuration = '0.08s';
+        spark.style.fontSize = '14px';
+      }
+      
+      // タイムアップ
+      if (this.timeRemaining <= 0) {
+        this.handleTimeUp();
+      }
+    }, 1000);
+  }
+  
+  stopCountdown() {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+      this.countdownTimer = null;
+    }
+    
+    // 爆弾タイマー非表示
+    const bombTimer = document.getElementById('bombTimer');
+    bombTimer.style.display = 'none';
+    
+    // スタイルリセット
+    const bomb = document.querySelector('.bomb');
+    const spark = document.getElementById('spark');
+    if (bomb) {
+      bomb.style.animationDuration = '';
+    }
+    if (spark) {
+      spark.style.fontSize = '';
+    }
+  }
+  
+  handleTimeUp() {
+    // 爆発エフェクト
+    this.showExplosion();
+    
+    setTimeout(() => {
+      this.stopCountdown();
+      
+      // タイムアップメッセージ
+      this.addCommandOutput('💥 爆発！時間切れです！次の問題に進みます。', 'command-error');
+      
+      // 進捗記録（タイムアップは「知らない」として記録）
+      const questions = QUIZ_QUESTIONS[this.currentLevel];
+      const currentQuestion = questions[this.currentQuestionIndex];
+      
+      if (!this.progress[this.currentLevel]) {
+        this.progress[this.currentLevel] = {};
+      }
+      this.progress[this.currentLevel][currentQuestion.id] = false;
+      this.saveProgress();
+      
+      // 2秒後に次の問題へ
+      setTimeout(() => {
+        this.nextQuestion();
+      }, 2000);
+    }, 500);
+  }
+  
+  showExplosion() {
+    const bomb = document.querySelector('.bomb');
+    const spark = document.getElementById('spark');
+    
+    // 爆発エフェクト
+    bomb.textContent = '💥';
+    bomb.style.animation = 'explosion 0.5s ease-out';
+    spark.style.display = 'none';
+    
+    // 爆発音効果（視覚的）
+    setTimeout(() => {
+      bomb.style.transform = 'scale(1)';
+      bomb.style.opacity = '1';
+      bomb.textContent = '💣';
+      bomb.style.animation = 'bombShake 0.1s infinite';
+      spark.style.display = 'block';
+    }, 500);
   }
 }
 

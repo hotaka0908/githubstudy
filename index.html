@@ -78,6 +78,16 @@
               <span class="terminal-title">ターミナル</span>
             </div>
             <div class="terminal-body">
+              <div class="bomb-timer" id="bombTimer" style="display: none;">
+                <div class="bomb-container">
+                  <div class="fuse-container">
+                    <div class="fuse" id="fuse">
+                      <div class="spark" id="spark">💥</div>
+                    </div>
+                  </div>
+                  <div class="bomb">💣</div>
+                </div>
+              </div>
               <div class="current-directory" id="currentDirectory">~/practice</div>
               <div class="file-system" id="fileSystem"></div>
               <div class="command-line">
@@ -87,9 +97,7 @@
               <div class="command-output" id="commandOutput"></div>
             </div>
             <div class="terminal-footer">
-              <button class="terminal-btn" id="executeBtn">実行</button>
               <button class="terminal-btn hint-btn" id="hintBtn">💡 ヒント</button>
-              <button class="terminal-btn skip-btn" id="skipBtn">スキップ</button>
             </div>
           </div>
         </div>
