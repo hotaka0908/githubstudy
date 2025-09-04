@@ -241,7 +241,7 @@ body {
   background: var(--panel-2);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 40px;
+  padding: 24px;
   max-width: 600px;
   width: 100%;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -264,14 +264,14 @@ body {
   font-size: 14px;
   font-weight: 600;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .question-content {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .question-content h2 {
@@ -279,7 +279,7 @@ body {
   line-height: 1.4;
   color: var(--text);
   background: var(--panel);
-  padding: 20px;
+  padding: 16px;
   border-radius: 12px;
   border-left: 4px solid var(--accent);
   font-family: 'Courier New', Consolas, monospace;
@@ -575,13 +575,13 @@ body {
 
 .demon-start-content {
   text-align: center;
-  padding: 20px;
+  padding: 12px;
 }
 
 .demon-start-content h3 {
   color: #ff4757;
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .command-input-area {
