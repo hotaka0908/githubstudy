@@ -115,6 +115,11 @@ class QuizApp {
     this.currentQuestionIndex = 0;
     this.demonModeStarted = false; // レベル切り替え時にリセット
     
+    // 鬼モードでは毎回ランダムで10問を初級/中級/上級から作成
+    if (level === 'demon') {
+      this.buildDemonQuestionSet();
+    }
+    
     // アクティブなレベルボタンを更新
     document.querySelectorAll('.level-btn').forEach(btn => {
       btn.classList.remove('active');
@@ -124,6 +129,29 @@ class QuizApp {
     this.updateLevelDisplay();
     this.showCurrentQuestion();
     this.updateProgress();
+  }
+  
+  // 鬼モードの問題セットを毎回ランダムに10問作る（初級/中級/上級から）
+  buildDemonQuestionSet() {
+    try {
+      const pool = [];
+      if (Array.isArray(QUIZ_QUESTIONS.beginner)) pool.push(...QUIZ_QUESTIONS.beginner);
+      if (Array.isArray(QUIZ_QUESTIONS.intermediate)) pool.push(...QUIZ_QUESTIONS.intermediate);
+      if (Array.isArray(QUIZ_QUESTIONS.advanced)) pool.push(...QUIZ_QUESTIONS.advanced);
+      
+      // シャッフルして先頭10件を採用
+      const shuffled = pool
+        .map((item) => ({ item, r: Math.random() }))
+        .sort((a, b) => a.r - b.r)
+        .map(({ item }) => item)
+        .slice(0, 10);
+      
+      // グローバルの問題セットを上書き（このセッション限定で使用）
+      QUIZ_QUESTIONS.demon = shuffled;
+    } catch (e) {
+      // フォールバック：既存の鬼モード問題をそのまま使用
+      console.warn('鬼モード問題のランダム化に失敗したため既存セットを使用します', e);
+    }
   }
   
   updateLevelDisplay() {
@@ -155,17 +183,25 @@ class QuizApp {
     const demonStartArea = document.getElementById('demonStartArea');
     
     if (this.currentLevel === 'demon') {
-      answerButtons.style.display = 'none';
-      
-      // 鬼モードが既に開始されている場合は直接コマンド入力エリアを表示
-      if (this.demonModeStarted) {
-        commandInputArea.style.display = 'block';
-        demonStartArea.style.display = 'none';
-        this.setupDemonMode(currentQuestion);
+      // 問題がコマンド型かどうかでUIを切り替える
+      const isCommandType = currentQuestion && (currentQuestion.type === 'command' || currentQuestion.expectedCommand);
+      if (isCommandType) {
+        answerButtons.style.display = 'none';
+        // 鬼モードが既に開始されている場合は直接コマンド入力エリアを表示
+        if (this.demonModeStarted) {
+          commandInputArea.style.display = 'block';
+          demonStartArea.style.display = 'none';
+          this.setupDemonMode(currentQuestion);
+        } else {
+          // 初回のみスタート画面を表示
+          commandInputArea.style.display = 'none';
+          demonStartArea.style.display = 'block';
+        }
       } else {
-        // 初回のみスタート画面を表示
+        // コマンド型でない場合は通常のQ/A表示にフォールバック
+        answerButtons.style.display = 'flex';
         commandInputArea.style.display = 'none';
-        demonStartArea.style.display = 'block';
+        demonStartArea.style.display = 'none';
       }
     } else {
       answerButtons.style.display = 'flex';
