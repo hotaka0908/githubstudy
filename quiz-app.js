@@ -11,12 +11,18 @@ class QuizApp {
   
   init() {
     this.bindEvents();
+    this.initTheme();
     this.updateLevelDisplay();
     this.showCurrentQuestion();
     this.updateProgress();
   }
   
   bindEvents() {
+    // テーマ切り替えボタン
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      this.toggleTheme();
+    });
+    
     // レベル切り替えボタン
     document.querySelectorAll('.level-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -315,6 +321,32 @@ class QuizApp {
     } catch (e) {
       console.warn('進捗の保存に失敗しました');
     }
+  }
+  
+  // テーマ管理メソッド
+  initTheme() {
+    const savedTheme = localStorage.getItem('quiz_theme') || 'light';
+    this.setTheme(savedTheme);
+  }
+  
+  toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    this.setTheme(newTheme);
+  }
+  
+  setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const themeIcon = document.querySelector('.theme-icon');
+    
+    if (theme === 'dark') {
+      themeIcon.textContent = '☀️';
+    } else {
+      themeIcon.textContent = '🌙';
+    }
+    
+    // テーマをローカルストレージに保存
+    localStorage.setItem('quiz_theme', theme);
   }
 }
 

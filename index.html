@@ -9,7 +9,12 @@
   </head>
   <body>
     <header class="app-header">
-      <h1>🚀 エンジニア必修知識クイズ</h1>
+      <div class="header-top">
+        <h1>🚀 エンジニア必修知識クイズ</h1>
+        <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </div>
       <div class="subtitle">実務で必須のコマンドとツールをマスター</div>
       
       <div id="progress" class="progress">
@@ -56,10 +61,10 @@
         
         <div class="answer-buttons">
           <button class="answer-btn know-btn" id="knowBtn">
-            ✅ 知ってる
+            知ってる
           </button>
           <button class="answer-btn dont-know-btn" id="dontKnowBtn">
-            ❌ 知らない
+            知らない
           </button>
         </div>
       </div>

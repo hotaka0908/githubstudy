@@ -1,16 +1,31 @@
 :root {
-  --bg: #0b0f14;
-  --panel: #121923;
-  --panel-2: #0f141c;
-  --text: #e6eefc;
-  --muted: #9bb0c4;
-  --accent: #4aa8ff;
-  --accent-2: #6bdba7;
-  --danger: #ff6b6b;
-  --warning: #ffa726;
-  --success: #66bb6a;
-  --chip: #1b2838;
-  --border: #213040;
+  --bg: #ffffff;
+  --panel: #f8f9fa;
+  --panel-2: #ffffff;
+  --text: #212529;
+  --muted: #6c757d;
+  --accent: #343a40;
+  --accent-2: #495057;
+  --danger: #d8594d;
+  --warning: #d8594d;
+  --success: #63b55c;
+  --chip: #f1f3f4;
+  --border: #dee2e6;
+}
+
+[data-theme="dark"] {
+  --bg: #121212;
+  --panel: #1e1e1e;
+  --panel-2: #2d2d2d;
+  --text: #e0e0e0;
+  --muted: #9e9e9e;
+  --accent: #ffffff;
+  --accent-2: #f5f5f5;
+  --danger: #d8594d;
+  --warning: #d8594d;
+  --success: #63b55c;
+  --chip: #3c3c3c;
+  --border: #404040;
 }
 
 * { 
@@ -23,7 +38,7 @@ html, body { height: 100%; }
 
 body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans JP, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  background: linear-gradient(135deg, #0b0f14 0%, #1a1f2e 50%, #0a1018 100%);
+  background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.6;
@@ -33,22 +48,48 @@ body {
 .app-header {
   padding: 20px;
   border-bottom: 1px solid var(--border);
-  background: rgba(11,15,20,0.95);
-  backdrop-filter: blur(12px);
+  background: var(--bg);
   position: sticky;
   top: 0;
   z-index: 50;
 }
 
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.theme-toggle {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 20px;
+}
+
+.theme-toggle:hover {
+  background: var(--accent);
+  color: var(--bg);
+  transform: rotate(180deg);
+}
+
+.theme-icon {
+  transition: transform 0.3s ease;
+}
+
 .app-header h1 {
-  margin: 0 0 8px 0;
+  margin: 0;
   font-size: 28px;
   font-weight: 800;
-  text-align: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text);
 }
 
 .app-header .subtitle {
@@ -90,8 +131,7 @@ body {
 .progress-percentage {
   font-size: 24px;
   font-weight: 800;
-  color: var(--accent-2);
-  text-shadow: 0 0 10px rgba(107, 219, 167, 0.3);
+  color: var(--accent);
 }
 
 .progress .bar {
@@ -109,10 +149,9 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   border-radius: 999px;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(74, 168, 255, 0.4);
 }
 
 .progress .bar-bg {
@@ -121,7 +160,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent 0%, rgba(107, 219, 167, 0.1) 100%);
+  background: var(--panel);
 }
 
 /* ========== レベル選択 ========== */
@@ -152,16 +191,14 @@ body {
 .level-btn:hover {
   transform: translateY(-2px);
   border-color: var(--accent);
-  box-shadow: 0 8px 25px rgba(74, 168, 255, 0.2);
   color: var(--text);
 }
 
 .level-btn.active {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  border-color: var(--accent-2);
-  color: #001424;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(74, 168, 255, 0.4);
 }
 
 .level-desc {
@@ -198,7 +235,7 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: var(--accent);
 }
 
 .question-number {
@@ -249,25 +286,21 @@ body {
 }
 
 .know-btn {
-  background: linear-gradient(135deg, var(--success), #81c784);
-  color: #1b5e20;
-  box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3);
+  background: var(--success);
+  color: var(--bg);
 }
 
 .know-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(102, 187, 106, 0.4);
 }
 
 .dont-know-btn {
-  background: linear-gradient(135deg, var(--warning), #ffb74d);
-  color: #bf360c;
-  box-shadow: 0 4px 15px rgba(255, 167, 38, 0.3);
+  background: var(--warning);
+  color: var(--bg);
 }
 
 .dont-know-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 167, 38, 0.4);
 }
 
 .answer-btn:active {
@@ -365,7 +398,7 @@ body {
 .explanation-section h4 {
   font-size: 16px;
   font-weight: 700;
-  color: var(--accent-2);
+  color: var(--accent);
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -395,7 +428,7 @@ body {
 }
 
 .tips {
-  background: linear-gradient(135deg, rgba(74, 168, 255, 0.1), rgba(107, 219, 167, 0.1));
+  background: var(--chip);
   padding: 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
@@ -426,7 +459,7 @@ body {
 .complete-header {
   padding: 24px;
   text-align: center;
-  background: linear-gradient(135deg, rgba(74, 168, 255, 0.1), rgba(107, 219, 167, 0.1));
+  background: var(--panel);
   border-bottom: 1px solid var(--border);
 }
 
@@ -454,10 +487,7 @@ body {
   display: block;
   font-size: 48px;
   font-weight: 900;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text);
 }
 
 .score-label {
@@ -527,14 +557,12 @@ body {
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #001424;
-  box-shadow: 0 4px 15px rgba(74, 168, 255, 0.3);
+  background: var(--accent);
+  color: var(--bg);
 }
 
 .primary-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(74, 168, 255, 0.4);
 }
 
 .secondary-btn {
