@@ -641,7 +641,10 @@ class QuizApp {
     if (!question) return;
     const answer = question.expectedCommand || '';
     if (answer) {
-      this.addCommandOutput('📝 答え: ' + answer, 'command-hint');
+      this.addCommandOutput('', ''); // 空行を追加
+      this.addCommandOutput('💡 正解は:', 'command-answer-label');
+      this.addCommandOutput('  ' + answer, 'command-answer');
+      this.addCommandOutput('', ''); // 空行を追加
     }
   }
   

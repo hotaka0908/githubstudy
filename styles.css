@@ -838,6 +838,26 @@ body {
   font-weight: normal;
 }
 
+.command-answer-label {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  margin: 8px 0 4px 0;
+}
+
+.command-answer {
+  color: var(--text);
+  font-family: 'Courier New', Monaco, monospace;
+  font-size: 16px;
+  font-weight: 500;
+  background: var(--chip);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 3px solid var(--accent);
+  margin: 4px 0 8px 0;
+  display: block;
+}
+
 
 /* ========== ボタンスタイル ========== */
 .primary-btn, .secondary-btn {
