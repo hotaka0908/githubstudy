@@ -79,6 +79,11 @@ class QuizApp {
         document.getElementById('knowBtn').click();
       } else if (e.key === '2' || e.key === 'ArrowRight') {
         document.getElementById('dontKnowBtn').click();
+      } else if (e.key === 'h' || e.key === 'H') {
+        // 鬼モードでのヒントボタン
+        if (this.currentLevel === 'demon' && document.getElementById('commandInputArea').style.display !== 'none') {
+          document.getElementById('hintBtn').click();
+        }
       } else if (e.key === 'Escape') {
         this.hideExplanation();
         this.hideLevelComplete();
