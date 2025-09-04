@@ -69,6 +69,10 @@ class QuizApp {
       this.resetDemonMode();
     });
     
+    document.getElementById('skipBtn').addEventListener('click', () => {
+      this.skipDemonQuestion();
+    });
+    
     document.getElementById('commandInput').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         this.executeCommand();
@@ -690,6 +694,26 @@ class QuizApp {
     const output = document.getElementById('commandOutput');
     output.innerHTML = '';
     output.style.display = 'none';
+  }
+  
+  skipDemonQuestion() {
+    const questions = QUIZ_QUESTIONS[this.currentLevel];
+    const currentQuestion = questions[this.currentQuestionIndex];
+    
+    // スキップしたことを記録
+    if (!this.progress[this.currentLevel]) {
+      this.progress[this.currentLevel] = {};
+    }
+    this.progress[this.currentLevel][currentQuestion.id] = false; // スキップは「知らない」として記録
+    this.saveProgress();
+    
+    // スキップメッセージを表示
+    this.addCommandOutput('⏭️ 問題をスキップしました。', 'command-error');
+    
+    // 1秒後に次の問題へ
+    setTimeout(() => {
+      this.nextQuestion();
+    }, 1000);
   }
 }
 

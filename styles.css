@@ -629,6 +629,10 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
 }
 
 .prompt {
@@ -645,11 +649,18 @@ body {
   color: var(--text);
   font-family: inherit;
   font-size: 14px;
-  padding: 4px;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+.command-line:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(52, 58, 64, 0.1);
 }
 
 .command-input::placeholder {
   color: var(--muted);
+  font-style: italic;
 }
 
 .command-output {
@@ -701,6 +712,17 @@ body {
 
 .terminal-btn.secondary:hover {
   background: var(--panel);
+}
+
+.terminal-btn.skip-btn {
+  background: var(--warning);
+  color: var(--bg);
+  margin-left: auto;
+}
+
+.terminal-btn.skip-btn:hover {
+  background: #e55039;
+  transform: translateY(-1px);
 }
 
 .command-success {
