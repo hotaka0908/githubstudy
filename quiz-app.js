@@ -9,6 +9,7 @@ class QuizApp {
     this.currentDirectory = '~/practice';
     this.countdownTimer = null;
     this.timeRemaining = 12;
+    this.demonModeStarted = false;
     
     this.init();
   }
@@ -112,6 +113,7 @@ class QuizApp {
   switchLevel(level) {
     this.currentLevel = level;
     this.currentQuestionIndex = 0;
+    this.demonModeStarted = false; // レベル切り替え時にリセット
     
     // アクティブなレベルボタンを更新
     document.querySelectorAll('.level-btn').forEach(btn => {
@@ -154,8 +156,17 @@ class QuizApp {
     
     if (this.currentLevel === 'demon') {
       answerButtons.style.display = 'none';
-      commandInputArea.style.display = 'none';
-      demonStartArea.style.display = 'block';
+      
+      // 鬼モードが既に開始されている場合は直接コマンド入力エリアを表示
+      if (this.demonModeStarted) {
+        commandInputArea.style.display = 'block';
+        demonStartArea.style.display = 'none';
+        this.setupDemonMode(currentQuestion);
+      } else {
+        // 初回のみスタート画面を表示
+        commandInputArea.style.display = 'none';
+        demonStartArea.style.display = 'block';
+      }
     } else {
       answerButtons.style.display = 'flex';
       commandInputArea.style.display = 'none';
@@ -393,6 +404,9 @@ class QuizApp {
   
   // 鬼モード関連メソッド
   startDemonMode() {
+    // 鬼モード開始フラグを設定
+    this.demonModeStarted = true;
+    
     // スタート画面を非表示にして、コマンド入力エリアを表示
     document.getElementById('demonStartArea').style.display = 'none';
     document.getElementById('commandInputArea').style.display = 'block';
