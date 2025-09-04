@@ -79,10 +79,16 @@ class QuizApp {
         document.getElementById('knowBtn').click();
       } else if (e.key === '2' || e.key === 'ArrowRight') {
         document.getElementById('dontKnowBtn').click();
-      } else if (e.key === 'h' || e.key === 'H') {
-        // 鬼モードでのヒントボタン
+      } else if (e.key === 'q') {
+        // 鬼モードでのヒントボタン (qq)
         if (this.currentLevel === 'demon' && document.getElementById('commandInputArea').style.display !== 'none') {
-          document.getElementById('hintBtn').click();
+          // qが連続で押された場合のみヒント表示
+          if (this.lastQKeyTime && Date.now() - this.lastQKeyTime < 500) {
+            document.getElementById('hintBtn').click();
+            this.lastQKeyTime = null;
+          } else {
+            this.lastQKeyTime = Date.now();
+          }
         }
       } else if (e.key === 'Escape') {
         this.hideExplanation();
