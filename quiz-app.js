@@ -677,9 +677,9 @@ class QuizApp {
     const currentQuestion = questions[this.currentQuestionIndex];
     
     if (currentQuestion.hint) {
-      this.addCommandOutput('💡 ヒント: ' + currentQuestion.hint, 'command-hint');
+      this.addCommandOutput('💡 ' + currentQuestion.hint, 'command-hint');
     } else {
-      this.addCommandOutput('💡 ヒント: ' + currentQuestion.expectedCommand, 'command-hint');
+      this.addCommandOutput('💡 ' + currentQuestion.expectedCommand, 'command-hint');
     }
     
     // ヒントボタンを一時的に無効化
