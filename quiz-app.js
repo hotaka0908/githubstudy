@@ -79,6 +79,10 @@ class QuizApp {
       this.shuffleQuestions();
     });
     
+    document.getElementById('startShuffleBtn').addEventListener('click', () => {
+      this.shuffleQuestions();
+    });
+    
     document.getElementById('commandInput').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         this.executeCommand();

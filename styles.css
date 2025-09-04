@@ -887,6 +887,12 @@ body {
   opacity: 0.5;
 }
 
+.start-shuffle-btn {
+  position: static;
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
 
 /* ========== ボタンスタイル ========== */
 .primary-btn, .secondary-btn {
