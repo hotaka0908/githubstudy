@@ -553,6 +553,14 @@ class QuizApp {
     // 正解判定
     if (result.success && this.checkAnswer(input, currentQuestion)) {
       this.stopCountdown(); // カウントダウンを停止
+      
+      // 進捗記録（正解として記録）
+      if (!this.progress[this.currentLevel]) {
+        this.progress[this.currentLevel] = {};
+      }
+      this.progress[this.currentLevel][currentQuestion.id] = true;
+      this.saveProgress();
+      
       setTimeout(() => {
         this.addCommandOutput('✅ 正解！答えを確認して次の問題へ。', 'command-success');
         this.showDemonAnswer(currentQuestion);
