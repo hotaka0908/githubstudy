@@ -511,12 +511,6 @@ class QuizApp {
     document.getElementById('commandInput').value = '';
     document.getElementById('commandInput').focus();
     
-    // ヒントボタンを表示
-    const hintBtn = document.getElementById('hintBtn');
-    if (hintBtn) {
-      hintBtn.style.display = 'block';
-    }
-    
     // カウントダウン開始
     this.startCountdown();
   }
@@ -671,11 +665,12 @@ class QuizApp {
     if (!question) return;
     const answer = question.expectedCommand || '';
     if (answer) {
-      // ヒントボタンを非表示にする
-      const hintBtn = document.getElementById('hintBtn');
-      if (hintBtn) {
-        hintBtn.style.display = 'none';
-      }
+      // ヒント内容を削除する（既存のヒント表示があれば）
+      const output = document.getElementById('commandOutput');
+      const hintElements = output.querySelectorAll('.command-hint');
+      hintElements.forEach(element => {
+        element.remove();
+      });
       
       this.addCommandOutput('', ''); // 空行を追加
       this.addCommandOutput('💡 正解は:', 'command-answer-label');
