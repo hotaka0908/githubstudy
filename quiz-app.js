@@ -536,10 +536,11 @@ class QuizApp {
     if (result.success && this.checkAnswer(input, currentQuestion)) {
       this.stopCountdown(); // カウントダウンを停止
       setTimeout(() => {
-        this.addCommandOutput('✅ 正解！次の問題に進みます。', 'command-success');
+        this.addCommandOutput('✅ 正解！答えを確認して次の問題へ。', 'command-success');
+        this.showDemonAnswer(currentQuestion);
         setTimeout(() => {
           this.nextQuestion();
-        }, 1500);
+        }, 2000);
       }, 500);
     }
     
@@ -807,13 +808,23 @@ class QuizApp {
     this.progress[this.currentLevel][currentQuestion.id] = false; // スキップは「知らない」として記録
     this.saveProgress();
     
-    // スキップメッセージを表示
-    this.addCommandOutput('⏭️ 問題をスキップしました。', 'command-error');
+    // スキップメッセージと答えを表示
+    this.addCommandOutput('⏭️ 問題をスキップしました。答えを表示します。', 'command-error');
+    this.showDemonAnswer(currentQuestion);
     
-    // 1秒後に次の問題へ
+    // 2秒後に次の問題へ
     setTimeout(() => {
       this.nextQuestion();
-    }, 1000);
+    }, 2000);
+  }
+
+  // 鬼モード: 問題と問題の間に答えを表示
+  showDemonAnswer(question) {
+    if (!question) return;
+    const answer = question.expectedCommand || '';
+    if (answer) {
+      this.addCommandOutput('📝 答え: ' + answer, 'command-hint');
+    }
   }
   
   showHint() {
@@ -909,7 +920,7 @@ class QuizApp {
       this.stopCountdown();
       
       // タイムアップメッセージ
-      this.addCommandOutput('💥 爆発！時間切れです！次の問題に進みます。', 'command-error');
+      this.addCommandOutput('💥 爆発！時間切れです。答えを表示します。', 'command-error');
       
       // 進捗記録（タイムアップは「知らない」として記録）
       const questions = QUIZ_QUESTIONS[this.currentLevel];
@@ -921,7 +932,8 @@ class QuizApp {
       this.progress[this.currentLevel][currentQuestion.id] = false;
       this.saveProgress();
       
-      // 2秒後に次の問題へ
+      // 答えを表示してから次の問題へ
+      this.showDemonAnswer(currentQuestion);
       setTimeout(() => {
         this.nextQuestion();
       }, 2000);
