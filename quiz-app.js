@@ -127,7 +127,7 @@ class QuizApp {
       'demon': '鬼モード'
     };
     
-    document.getElementById('currentLevel').textContent = levelNames[this.currentLevel];
+    // 進捗表示は削除済み
   }
   
   showCurrentQuestion() {
@@ -140,7 +140,6 @@ class QuizApp {
     }
     
     document.getElementById('questionNumber').textContent = this.currentQuestionIndex + 1;
-    document.getElementById('currentQuestion').textContent = this.currentQuestionIndex + 1;
     document.getElementById('questionText').textContent = currentQuestion.question;
     
     // 鬼モードの場合はコマンド入力エリアを表示
@@ -339,12 +338,7 @@ class QuizApp {
   }
   
   updateProgress() {
-    const questions = QUIZ_QUESTIONS[this.currentLevel];
-    const totalQuestions = questions.length;
-    const currentProgress = ((this.currentQuestionIndex) / totalQuestions) * 100;
-    
-    document.getElementById('progressPct').textContent = `${Math.round(currentProgress)}%`;
-    document.getElementById('progressBar').style.width = `${currentProgress}%`;
+    // 進捗バーは削除済み - 何もしない
   }
   
   loadProgress() {
