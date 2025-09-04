@@ -736,7 +736,7 @@ class QuizApp {
       this.stopCountdown();
       
       // タイムアップメッセージ
-      this.addCommandOutput('💥 爆発！時間切れです。答えを表示します。', 'command-error');
+      this.addCommandOutput('💥 爆発！時間切れです。', 'command-error');
       
       // 進捗記録（タイムアップは「知らない」として記録）
       const questions = QUIZ_QUESTIONS[this.currentLevel];
