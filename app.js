@@ -140,7 +140,10 @@ function itemCard(it) {
     renderProgress();
   });
 
-  const foot = el("div", { className: "foot" }, [toggleBtn]);
+  const exampleBtn = el("button", { className: "ghost", textContent: "例題を見る" });
+  exampleBtn.addEventListener('click', () => openExample(it));
+
+  const foot = el("div", { className: "foot" }, [toggleBtn, exampleBtn]);
   card.append(head, body, foot);
   return card;
 }
@@ -172,6 +175,7 @@ function setupReset() {
 }
 
 function init() {
+  ensureOverlay();
   renderCategories();
   renderLevelChips();
   renderTimeChips();
@@ -183,3 +187,75 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+// ---------- Example overlay ----------
+let overlayEl = null;
+
+function ensureOverlay() {
+  if (overlayEl) return;
+  overlayEl = document.createElement('div');
+  overlayEl.className = 'overlay';
+  overlayEl.innerHTML = `
+    <div class="sheet">
+      <div class="sheet-head">
+        <h3 class="sheet-title">例題</h3>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="secondary" id="exCopy">内容をコピー</button>
+          <button class="danger" id="exClose">閉じる</button>
+        </div>
+      </div>
+      <div class="sheet-body" id="exBody"></div>
+    </div>`;
+  document.body.appendChild(overlayEl);
+  overlayEl.addEventListener('click', (e) => { if (e.target === overlayEl) hideOverlay(); });
+  overlayEl.querySelector('#exClose').addEventListener('click', hideOverlay);
+  overlayEl.querySelector('#exCopy').addEventListener('click', copyOverlayText);
+}
+
+function hideOverlay() { overlayEl?.classList.remove('show'); }
+
+function copyOverlayText() {
+  const text = overlayEl.querySelector('#exBody').innerText;
+  navigator.clipboard?.writeText(text).then(() => {
+    const btn = overlayEl.querySelector('#exCopy');
+    const old = btn.textContent; btn.textContent = 'コピーしました';
+    setTimeout(() => btn.textContent = old, 1200);
+  }).catch(() => {});
+}
+
+function renderBlocks(host, example) {
+  if (example.intro) host.appendChild(el('div', { className: 'block', textContent: example.intro }));
+  (example.blocks || []).forEach(b => {
+    const wrap = el('div', { className: 'block' });
+    if (b.title) wrap.appendChild(el('h4', { textContent: b.title }));
+    if (b.kind === 'text') {
+      wrap.appendChild(el('div', { textContent: b.content }));
+    } else if (b.kind === 'code') {
+      const pre = el('pre');
+      const code = el('code', { textContent: b.content });
+      pre.appendChild(code); wrap.appendChild(pre);
+    }
+    host.appendChild(wrap);
+  });
+}
+
+function fallbackExample(it) {
+  return {
+    intro: `${it.title} の実践ポイントを要約します。` ,
+    blocks: [
+      { kind: 'text', title: 'なぜ', content: it.why },
+      { kind: 'text', title: '何を', content: it.what },
+      { kind: 'text', title: 'コツ', content: it.tips },
+      { kind: 'text', title: '演習', content: it.practice }
+    ]
+  };
+}
+
+function openExample(it) {
+  ensureOverlay();
+  const ex = (typeof EXAMPLES !== 'undefined' && EXAMPLES[it.id]) ? EXAMPLES[it.id] : fallbackExample(it);
+  overlayEl.querySelector('.sheet-title').textContent = `例題: ${it.title}`;
+  const body = overlayEl.querySelector('#exBody');
+  body.innerHTML = '';
+  renderBlocks(body, ex);
+  overlayEl.classList.add('show');
+}
