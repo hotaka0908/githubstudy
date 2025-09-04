@@ -327,7 +327,8 @@ class QuizApp {
     const levelProgress = this.progress[this.currentLevel] || {};
     const questions = QUIZ_QUESTIONS[this.currentLevel];
     const totalQuestions = questions.length;
-    const knownQuestions = Object.values(levelProgress).filter(known => known).length;
+    // 現在の出題セットに含まれるIDのみで正解数をカウント
+    const knownQuestions = questions.reduce((sum, q) => sum + (levelProgress[q.id] ? 1 : 0), 0);
     const unknownQuestions = totalQuestions - knownQuestions;
     
     const percentage = Math.round((knownQuestions / totalQuestions) * 100);
@@ -350,6 +351,8 @@ class QuizApp {
       'advanced': '上級'
     };
     
+    const correctLabel = this.currentLevel === 'demon' ? '正解' : '知っていた';
+    const incorrectLabel = this.currentLevel === 'demon' ? '不正解' : '学習した';
     content.innerHTML = `
       <div class="result-summary">
         <div class="result-score">
@@ -358,11 +361,11 @@ class QuizApp {
         </div>
         <div class="result-details">
           <div class="detail-item">
-            <span class="detail-label">知っていた:</span>
+            <span class="detail-label">${correctLabel}:</span>
             <span class="detail-value known">${knownQuestions}問</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">学習した:</span>
+            <span class="detail-label">${incorrectLabel}:</span>
             <span class="detail-value learned">${unknownQuestions}問</span>
           </div>
         </div>
