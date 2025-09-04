@@ -413,6 +413,12 @@ class QuizApp {
   reviewLevel() {
     this.hideLevelComplete();
     this.currentQuestionIndex = 0;
+    
+    // 鬼モードの場合はスタート画面に戻る
+    if (this.currentLevel === 'demon') {
+      this.demonModeStarted = false;
+    }
+    
     this.showCurrentQuestion();
   }
   
