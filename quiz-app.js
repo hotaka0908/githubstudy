@@ -118,6 +118,8 @@ class QuizApp {
     this.currentLevel = level;
     this.currentQuestionIndex = 0;
     this.demonModeStarted = false; // レベル切り替え時にリセット
+    // モバイルではデフォルトで折りたたみ解除（開始時に再度折りたたむ）
+    document.body.classList.remove('mobile-collapsed');
     
     // 鬼モードでは毎回ランダムで10問を初級/中級/上級から作成
     if (level === 'demon') {
@@ -390,6 +392,10 @@ class QuizApp {
     }
     
     modal.classList.add('show');
+    // 鬼モード終了時はモバイルの折りたたみを解除してモード選択にアクセス可能に
+    if (this.currentLevel === 'demon' && window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+      document.body.classList.remove('mobile-collapsed');
+    }
   }
   
   hideLevelComplete() {
@@ -481,6 +487,10 @@ class QuizApp {
     // スタート画面を非表示にして、コマンド入力エリアを表示
     document.getElementById('demonStartArea').style.display = 'none';
     document.getElementById('commandInputArea').style.display = 'block';
+    // スマホ表示時はモード選択を折りたたむ
+    if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+      document.body.classList.add('mobile-collapsed');
+    }
     
     // 現在の問題で鬼モードをセットアップ
     const questions = QUIZ_QUESTIONS[this.currentLevel];

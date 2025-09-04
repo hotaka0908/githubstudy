@@ -928,6 +928,9 @@ body {
 
 /* ========== レスポンシブ ========== */
 @media (max-width: 768px) {
+  /* 鬼モード開始時はモード選択を折りたたみ */
+  .mobile-collapsed .level-selector { display: none; }
+  .mobile-collapsed .subtitle { display: none; }
   .app-header {
     padding: 16px;
   }
