@@ -605,7 +605,7 @@ body {
 }
 
 .command-input-area {
-  margin-top: 24px;
+  margin-top: 0;
   width: 100%;
 }
 
