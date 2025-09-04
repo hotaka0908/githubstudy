@@ -79,10 +79,10 @@ class QuizApp {
         document.getElementById('knowBtn').click();
       } else if (e.key === '2' || e.key === 'ArrowRight') {
         document.getElementById('dontKnowBtn').click();
-      } else if (e.key === 'Delete') {
-        // 鬼モードでのヒントボタン (Delete x2)
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        // 鬼モードでのヒントボタン (Delete/Backspace x2)
         if (this.currentLevel === 'demon' && document.getElementById('commandInputArea').style.display !== 'none') {
-          // Deleteが連続で押された場合のみヒント表示
+          // Delete/Backspaceが連続で押された場合のみヒント表示
           if (this.lastDeleteKeyTime && Date.now() - this.lastDeleteKeyTime < 500) {
             document.getElementById('hintBtn').click();
             this.lastDeleteKeyTime = null;
