@@ -46,6 +46,9 @@
         <button class="level-btn" data-level="advanced">
           🔥 上級<span class="level-desc">システム管理</span>
         </button>
+        <button class="level-btn demon-btn" data-level="demon">
+          👹 鬼モード<span class="level-desc">実践コマンド</span>
+        </button>
       </div>
     </header>
 
@@ -59,13 +62,35 @@
           <h2 id="questionText">loading...</h2>
         </div>
         
-        <div class="answer-buttons">
+        <div class="answer-buttons" id="answerButtons">
           <button class="answer-btn know-btn" id="knowBtn">
             知ってる
           </button>
           <button class="answer-btn dont-know-btn" id="dontKnowBtn">
             知らない
           </button>
+        </div>
+        
+        <!-- 鬼モード用コマンド入力エリア -->
+        <div class="command-input-area" id="commandInputArea" style="display: none;">
+          <div class="terminal">
+            <div class="terminal-header">
+              <span class="terminal-title">ターミナル</span>
+            </div>
+            <div class="terminal-body">
+              <div class="current-directory" id="currentDirectory">~/practice</div>
+              <div class="file-system" id="fileSystem"></div>
+              <div class="command-line">
+                <span class="prompt">$ </span>
+                <input type="text" class="command-input" id="commandInput" placeholder="コマンドを入力してください..." autocomplete="off">
+              </div>
+              <div class="command-output" id="commandOutput"></div>
+            </div>
+            <div class="terminal-footer">
+              <button class="terminal-btn" id="executeBtn">実行</button>
+              <button class="terminal-btn secondary" id="resetBtn">リセット</button>
+            </div>
+          </div>
         </div>
       </div>
     </main>

@@ -1,4 +1,226 @@
 const QUIZ_QUESTIONS = {
+  demon: [
+    {
+      id: 'd001',
+      question: 'test.jsファイルを作成してください',
+      type: 'command',
+      expectedCommand: 'touch test.js',
+      expectedFiles: ['test.js'],
+      explanation: {
+        title: '実践: touchコマンドでファイル作成',
+        description: '実際にコマンドを入力してファイルを作成する実践問題です。',
+        usage: [
+          'touch filename - 空のファイルを作成',
+          'touch file1 file2 - 複数ファイルを同時作成'
+        ],
+        examples: [
+          'touch test.js',
+          'touch index.html',
+          'touch script.js style.css'
+        ],
+        tips: '実際のコマンドを正確に入力することが重要です。'
+      }
+    },
+    {
+      id: 'd002',
+      question: 'srcディレクトリを作成してください',
+      type: 'command',
+      expectedCommand: 'mkdir src',
+      expectedFiles: ['src/'],
+      explanation: {
+        title: '実践: mkdirコマンドでディレクトリ作成',
+        description: '実際にコマンドを入力してディレクトリを作成する実践問題です。',
+        usage: [
+          'mkdir dirname - ディレクトリを作成',
+          'mkdir -p path/to/dir - 階層ディレクトリを作成'
+        ],
+        examples: [
+          'mkdir src',
+          'mkdir components',
+          'mkdir -p src/components/ui'
+        ],
+        tips: 'ディレクトリ名にスペースが含まれる場合はクォートで囲みましょう。'
+      }
+    },
+    {
+      id: 'd003',
+      question: 'config.jsonファイルの内容を表示してください',
+      type: 'command',
+      expectedCommand: 'cat config.json',
+      initialFiles: ['config.json'],
+      explanation: {
+        title: '実践: catコマンドでファイル内容表示',
+        description: '実際にコマンドを入力してファイル内容を確認する実践問題です。',
+        usage: [
+          'cat filename - ファイル内容を表示',
+          'cat file1 file2 - 複数ファイルを連結表示'
+        ],
+        examples: [
+          'cat config.json',
+          'cat README.md',
+          'cat package.json'
+        ],
+        tips: 'ファイル名を正確に入力することが重要です。'
+      }
+    },
+    {
+      id: 'd004',
+      question: 'app.jsをbackup.jsにコピーしてください',
+      type: 'command',
+      expectedCommand: 'cp app.js backup.js',
+      initialFiles: ['app.js'],
+      expectedFiles: ['app.js', 'backup.js'],
+      explanation: {
+        title: '実践: cpコマンドでファイルコピー',
+        description: '実際にコマンドを入力してファイルをコピーする実践問題です。',
+        usage: [
+          'cp source dest - ファイルをコピー',
+          'cp -r dir newdir - ディレクトリを再帰コピー'
+        ],
+        examples: [
+          'cp app.js backup.js',
+          'cp config.json config.backup.json',
+          'cp -r src/ backup/src/'
+        ],
+        tips: 'コピー元とコピー先のファイル名を正確に指定してください。'
+      }
+    },
+    {
+      id: 'd005',
+      question: '".js"を含むファイルを検索してください',
+      type: 'command',
+      expectedCommand: 'find . -name "*.js"',
+      initialFiles: ['app.js', 'test.js', 'config.json', 'style.css'],
+      explanation: {
+        title: '実践: findコマンドでファイル検索',
+        description: '実際にコマンドを入力してファイルを検索する実践問題です。',
+        usage: [
+          'find . -name pattern - パターンでファイル検索',
+          'find . -type f - ファイルのみ検索',
+          'find . -type d - ディレクトリのみ検索'
+        ],
+        examples: [
+          'find . -name "*.js"',
+          'find . -name "*.json"',
+          'find . -type d -name "src"'
+        ],
+        tips: 'ワイルドカード(*)を使ってパターンマッチングができます。'
+      }
+    },
+    {
+      id: 'd006',
+      question: 'package.jsonファイル内で"react"という文字列を検索してください',
+      type: 'command',
+      expectedCommand: 'grep "react" package.json',
+      initialFiles: ['package.json'],
+      explanation: {
+        title: '実践: grepコマンドでテキスト検索',
+        description: '実際にコマンドを入力してファイル内のテキストを検索する実践問題です。',
+        usage: [
+          'grep "pattern" file - ファイル内でパターン検索',
+          'grep -i "pattern" file - 大文字小文字無視して検索',
+          'grep -n "pattern" file - 行番号付きで検索'
+        ],
+        examples: [
+          'grep "react" package.json',
+          'grep -i "error" log.txt',
+          'grep -n "function" script.js'
+        ],
+        tips: '検索文字列はクォートで囲むと確実です。'
+      }
+    },
+    {
+      id: 'd007',
+      question: 'current-directoryという名前のディレクトリを作成し、その中に移動してください',
+      type: 'command',
+      expectedCommand: 'mkdir current-directory && cd current-directory',
+      expectedFiles: ['current-directory/'],
+      expectedLocation: 'current-directory',
+      explanation: {
+        title: '実践: 複合コマンドでディレクトリ作成と移動',
+        description: '実際にコマンドを組み合わせてディレクトリ作成と移動を行う実践問題です。',
+        usage: [
+          'mkdir dirname && cd dirname - ディレクトリ作成して移動',
+          'command1 && command2 - 前のコマンド成功時に次を実行',
+          'command1 ; command2 - 前のコマンドの結果に関係なく次を実行'
+        ],
+        examples: [
+          'mkdir project && cd project',
+          'mkdir src && cd src',
+          'mkdir -p path/to/dir && cd path/to/dir'
+        ],
+        tips: '&&演算子で複数コマンドを連結できます。'
+      }
+    },
+    {
+      id: 'd008',
+      question: 'index.htmlファイルに"Hello World"というテキストを書き込んでください',
+      type: 'command',
+      expectedCommand: 'echo "Hello World" > index.html',
+      expectedFiles: ['index.html'],
+      expectedContent: {'index.html': 'Hello World'},
+      explanation: {
+        title: '実践: echoとリダイレクトでファイル作成',
+        description: '実際にコマンドを使ってファイルにテキストを書き込む実践問題です。',
+        usage: [
+          'echo "text" > file - ファイルにテキストを書き込み（上書き）',
+          'echo "text" >> file - ファイルにテキストを追記',
+          'echo $VARIABLE - 環境変数の値を表示'
+        ],
+        examples: [
+          'echo "Hello World" > index.html',
+          'echo "console.log(\'test\')" > script.js',
+          'echo "# README" > README.md'
+        ],
+        tips: 'リダイレクト(>)でファイルに出力を書き込めます。'
+      }
+    },
+    {
+      id: 'd009',
+      question: 'temp.txtファイルを削除してください',
+      type: 'command',
+      expectedCommand: 'rm temp.txt',
+      initialFiles: ['temp.txt', 'important.txt'],
+      expectedFiles: ['important.txt'],
+      explanation: {
+        title: '実践: rmコマンドでファイル削除',
+        description: '実際にコマンドを入力してファイルを削除する実践問題です。',
+        usage: [
+          'rm filename - ファイルを削除',
+          'rm -r dirname - ディレクトリを再帰削除',
+          'rm -f filename - 強制削除'
+        ],
+        examples: [
+          'rm temp.txt',
+          'rm *.log',
+          'rm -r build/'
+        ],
+        tips: '削除は取り消せないので、削除対象を慎重に確認してください。'
+      }
+    },
+    {
+      id: 'd010',
+      question: '現在のディレクトリ内の全ファイルを詳細情報付きで一覧表示してください',
+      type: 'command',
+      expectedCommand: 'ls -la',
+      initialFiles: ['.hidden.txt', 'visible.txt', 'script.js'],
+      explanation: {
+        title: '実践: lsコマンドでファイル一覧表示',
+        description: '実際にコマンドを入力してファイル一覧を詳細表示する実践問題です。',
+        usage: [
+          'ls -la - 隠しファイル含む詳細一覧',
+          'ls -l - 詳細情報付き一覧',
+          'ls -a - 隠しファイルも含めて一覧'
+        ],
+        examples: [
+          'ls -la',
+          'ls -l *.js',
+          'ls -la /home/user'
+        ],
+        tips: '-lで詳細情報、-aで隠しファイルも表示されます。'
+      }
+    }
+  ],
   beginner: [
     {
       id: 'b001',

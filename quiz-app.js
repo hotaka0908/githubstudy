@@ -5,6 +5,8 @@ class QuizApp {
     this.currentLevel = 'beginner';
     this.currentQuestionIndex = 0;
     this.progress = this.loadProgress();
+    this.fileSystem = new Map();
+    this.currentDirectory = '~/practice';
     
     this.init();
   }
@@ -58,6 +60,21 @@ class QuizApp {
       this.reviewLevel();
     });
     
+    // 鬼モード用イベント
+    document.getElementById('executeBtn').addEventListener('click', () => {
+      this.executeCommand();
+    });
+    
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      this.resetDemonMode();
+    });
+    
+    document.getElementById('commandInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        this.executeCommand();
+      }
+    });
+
     // キーボードショートカット
     document.addEventListener('keydown', (e) => {
       if (e.key === '1' || e.key === 'ArrowLeft') {
@@ -97,7 +114,8 @@ class QuizApp {
     const levelNames = {
       'beginner': '初級',
       'intermediate': '中級', 
-      'advanced': '上級'
+      'advanced': '上級',
+      'demon': '鬼モード'
     };
     
     document.getElementById('currentLevel').textContent = levelNames[this.currentLevel];
@@ -115,6 +133,19 @@ class QuizApp {
     document.getElementById('questionNumber').textContent = this.currentQuestionIndex + 1;
     document.getElementById('currentQuestion').textContent = this.currentQuestionIndex + 1;
     document.getElementById('questionText').textContent = currentQuestion.question;
+    
+    // 鬼モードの場合はコマンド入力エリアを表示
+    const answerButtons = document.getElementById('answerButtons');
+    const commandInputArea = document.getElementById('commandInputArea');
+    
+    if (this.currentLevel === 'demon') {
+      answerButtons.style.display = 'none';
+      commandInputArea.style.display = 'block';
+      this.setupDemonMode(currentQuestion);
+    } else {
+      answerButtons.style.display = 'flex';
+      commandInputArea.style.display = 'none';
+    }
     
     // カードのアニメーション
     const card = document.getElementById('quizCard');
@@ -283,7 +314,7 @@ class QuizApp {
   }
   
   getNextLevel() {
-    const levels = ['beginner', 'intermediate', 'advanced'];
+    const levels = ['beginner', 'intermediate', 'advanced', 'demon'];
     const currentIndex = levels.indexOf(this.currentLevel);
     return levels[currentIndex + 1] || null;
   }
@@ -292,7 +323,8 @@ class QuizApp {
     const nextLevel = this.getNextLevel();
     const levelNames = {
       'intermediate': '中級',
-      'advanced': '上級'
+      'advanced': '上級',
+      'demon': '鬼モード'
     };
     return levelNames[nextLevel] || '';
   }
@@ -347,6 +379,317 @@ class QuizApp {
     
     // テーマをローカルストレージに保存
     localStorage.setItem('quiz_theme', theme);
+  }
+  
+  // 鬼モード関連メソッド
+  setupDemonMode(question) {
+    // ファイルシステムをリセット
+    this.fileSystem.clear();
+    this.currentDirectory = '~/practice';
+    
+    // 初期ファイルを設定
+    if (question.initialFiles) {
+      question.initialFiles.forEach(file => {
+        if (file.endsWith('/')) {
+          this.fileSystem.set(file.slice(0, -1), { type: 'directory', content: null });
+        } else {
+          this.fileSystem.set(file, { type: 'file', content: 'sample content' });
+        }
+      });
+    }
+    
+    this.updateFileSystemDisplay();
+    this.clearCommandOutput();
+    document.getElementById('commandInput').value = '';
+    document.getElementById('commandInput').focus();
+  }
+  
+  resetDemonMode() {
+    const questions = QUIZ_QUESTIONS[this.currentLevel];
+    const currentQuestion = questions[this.currentQuestionIndex];
+    this.setupDemonMode(currentQuestion);
+  }
+  
+  executeCommand() {
+    const input = document.getElementById('commandInput').value.trim();
+    const output = document.getElementById('commandOutput');
+    
+    if (!input) return;
+    
+    // コマンド履歴を表示
+    this.addCommandOutput(`$ ${input}`, 'command-input');
+    
+    const questions = QUIZ_QUESTIONS[this.currentLevel];
+    const currentQuestion = questions[this.currentQuestionIndex];
+    
+    // コマンドを実行
+    const result = this.simulateCommand(input, currentQuestion);
+    
+    if (result.output) {
+      this.addCommandOutput(result.output, result.success ? 'command-success' : 'command-error');
+    }
+    
+    this.updateFileSystemDisplay();
+    
+    // 正解判定
+    if (result.success && this.checkAnswer(input, currentQuestion)) {
+      setTimeout(() => {
+        this.addCommandOutput('✅ 正解！次の問題に進みます。', 'command-success');
+        setTimeout(() => {
+          this.nextQuestion();
+        }, 1500);
+      }, 500);
+    }
+    
+    document.getElementById('commandInput').value = '';
+  }
+  
+  simulateCommand(command, question) {
+    const parts = command.split(' ');
+    const cmd = parts[0];
+    const args = parts.slice(1);
+    
+    switch (cmd) {
+      case 'touch':
+        return this.simulateTouch(args);
+      case 'mkdir':
+        return this.simulateMkdir(args);
+      case 'ls':
+        return this.simulateLs(args);
+      case 'cat':
+        return this.simulateCat(args);
+      case 'cp':
+        return this.simulateCp(args);
+      case 'rm':
+        return this.simulateRm(args);
+      case 'find':
+        return this.simulateFind(args);
+      case 'grep':
+        return this.simulateGrep(args);
+      case 'echo':
+        return this.simulateEcho(args, command);
+      case 'cd':
+        return this.simulateCd(args);
+      case 'pwd':
+        return this.simulatePwd();
+      default:
+        return { success: false, output: `bash: ${cmd}: command not found` };
+    }
+  }
+  
+  simulateTouch(args) {
+    if (args.length === 0) {
+      return { success: false, output: 'touch: missing file operand' };
+    }
+    
+    args.forEach(filename => {
+      this.fileSystem.set(filename, { type: 'file', content: '' });
+    });
+    
+    return { success: true, output: '' };
+  }
+  
+  simulateMkdir(args) {
+    if (args.length === 0) {
+      return { success: false, output: 'mkdir: missing operand' };
+    }
+    
+    args.forEach(dirname => {
+      this.fileSystem.set(dirname, { type: 'directory', content: null });
+    });
+    
+    return { success: true, output: '' };
+  }
+  
+  simulateLs(args) {
+    const files = Array.from(this.fileSystem.keys()).sort();
+    const showAll = args.includes('-a') || args.includes('-la') || args.includes('-al');
+    const longFormat = args.includes('-l') || args.includes('-la') || args.includes('-al');
+    
+    let output = '';
+    files.forEach(file => {
+      const item = this.fileSystem.get(file);
+      if (showAll || !file.startsWith('.')) {
+        if (longFormat) {
+          const type = item.type === 'directory' ? 'd' : '-';
+          const permissions = item.type === 'directory' ? 'rwxr-xr-x' : 'rw-r--r--';
+          output += `${type}${permissions} 1 user user 1024 Dec 1 12:00 ${file}\n`;
+        } else {
+          output += file + '\n';
+        }
+      }
+    });
+    
+    return { success: true, output: output.trim() };
+  }
+  
+  simulateCat(args) {
+    if (args.length === 0) {
+      return { success: false, output: 'cat: missing file operand' };
+    }
+    
+    const filename = args[0];
+    const file = this.fileSystem.get(filename);
+    
+    if (!file) {
+      return { success: false, output: `cat: ${filename}: No such file or directory` };
+    }
+    
+    if (file.type === 'directory') {
+      return { success: false, output: `cat: ${filename}: Is a directory` };
+    }
+    
+    return { success: true, output: file.content || 'sample file content' };
+  }
+  
+  simulateCp(args) {
+    if (args.length < 2) {
+      return { success: false, output: 'cp: missing destination file operand' };
+    }
+    
+    const source = args[0];
+    const dest = args[1];
+    const sourceFile = this.fileSystem.get(source);
+    
+    if (!sourceFile) {
+      return { success: false, output: `cp: cannot stat '${source}': No such file or directory` };
+    }
+    
+    this.fileSystem.set(dest, { ...sourceFile });
+    return { success: true, output: '' };
+  }
+  
+  simulateRm(args) {
+    if (args.length === 0) {
+      return { success: false, output: 'rm: missing operand' };
+    }
+    
+    args.forEach(filename => {
+      if (this.fileSystem.has(filename)) {
+        this.fileSystem.delete(filename);
+      }
+    });
+    
+    return { success: true, output: '' };
+  }
+  
+  simulateFind(args) {
+    const nameIndex = args.indexOf('-name');
+    if (nameIndex === -1 || !args[nameIndex + 1]) {
+      return { success: false, output: 'find: missing argument to `-name\'' };
+    }
+    
+    const pattern = args[nameIndex + 1].replace(/"/g, '').replace(/\*/g, '.*');
+    const regex = new RegExp(pattern);
+    
+    const results = Array.from(this.fileSystem.keys())
+      .filter(file => regex.test(file))
+      .map(file => `./${file}`)
+      .join('\n');
+    
+    return { success: true, output: results };
+  }
+  
+  simulateGrep(args) {
+    if (args.length < 2) {
+      return { success: false, output: 'grep: missing pattern or file' };
+    }
+    
+    const pattern = args[0].replace(/"/g, '');
+    const filename = args[1];
+    const file = this.fileSystem.get(filename);
+    
+    if (!file) {
+      return { success: false, output: `grep: ${filename}: No such file or directory` };
+    }
+    
+    // 簡単なパターンマッチング
+    const content = file.content || 'sample file content with react library';
+    const lines = content.split('\n').filter(line => line.includes(pattern));
+    
+    return { success: true, output: lines.join('\n') || '' };
+  }
+  
+  simulateEcho(args, fullCommand) {
+    const redirectIndex = fullCommand.indexOf('>');
+    if (redirectIndex !== -1) {
+      const parts = fullCommand.split('>');
+      const text = parts[0].replace('echo', '').trim().replace(/"/g, '');
+      const filename = parts[1].trim();
+      
+      this.fileSystem.set(filename, { type: 'file', content: text });
+      return { success: true, output: '' };
+    }
+    
+    const text = args.join(' ').replace(/"/g, '');
+    return { success: true, output: text };
+  }
+  
+  simulateCd(args) {
+    // 簡単な実装（実際のディレクトリ変更はシミュレート）
+    if (args.length > 0) {
+      this.currentDirectory = `~/practice/${args[0]}`;
+    }
+    return { success: true, output: '' };
+  }
+  
+  simulatePwd() {
+    return { success: true, output: this.currentDirectory };
+  }
+  
+  checkAnswer(command, question) {
+    const normalizedCommand = command.trim().toLowerCase();
+    const expectedCommand = question.expectedCommand.toLowerCase();
+    
+    // 基本的なコマンドマッチング
+    if (normalizedCommand === expectedCommand) {
+      return true;
+    }
+    
+    // 代替形式もチェック（例：ls -al と ls -la）
+    if (question.expectedCommand.includes('ls -la')) {
+      return normalizedCommand.includes('ls') && 
+             (normalizedCommand.includes('-la') || normalizedCommand.includes('-al'));
+    }
+    
+    return false;
+  }
+  
+  updateFileSystemDisplay() {
+    const fileSystemDiv = document.getElementById('fileSystem');
+    const files = Array.from(this.fileSystem.entries()).sort();
+    
+    if (files.length === 0) {
+      fileSystemDiv.innerHTML = '';
+      return;
+    }
+    
+    let html = '';
+    files.forEach(([name, info]) => {
+      const className = info.type === 'directory' ? 'directory-item' : 'file-item';
+      const displayName = info.type === 'directory' ? `📁 ${name}/` : `📄 ${name}`;
+      html += `<span class="${className}">${displayName}</span>`;
+    });
+    
+    fileSystemDiv.innerHTML = html;
+  }
+  
+  addCommandOutput(text, className = '') {
+    const output = document.getElementById('commandOutput');
+    const div = document.createElement('div');
+    div.textContent = text;
+    if (className) {
+      div.className = className;
+    }
+    output.appendChild(div);
+    output.scrollTop = output.scrollHeight;
+    output.style.display = 'block';
+  }
+  
+  clearCommandOutput() {
+    const output = document.getElementById('commandOutput');
+    output.innerHTML = '';
+    output.style.display = 'none';
   }
 }
 

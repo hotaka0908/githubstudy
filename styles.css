@@ -201,6 +201,27 @@ body {
   transform: translateY(-2px);
 }
 
+.demon-btn {
+  background: linear-gradient(135deg, #ff4757, #ff3742);
+  border-color: #ff4757;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.demon-btn:hover {
+  background: linear-gradient(135deg, #ff3742, #ff2f3a);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.3);
+}
+
+.demon-btn.active {
+  background: linear-gradient(135deg, #ff4757, #ff3742);
+  border-color: #ff4757;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+}
+
 .level-desc {
   font-size: 12px;
   font-weight: 400;
@@ -543,6 +564,167 @@ body {
   display: flex;
   gap: 12px;
   justify-content: center;
+}
+
+/* ========== コマンド入力エリア ========== */
+.command-input-area {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.terminal {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: 'Courier New', Consolas, monospace;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.terminal-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.terminal-body {
+  padding: 16px;
+  min-height: 200px;
+}
+
+.current-directory {
+  color: var(--accent);
+  font-size: 14px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.file-system {
+  background: var(--chip);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  min-height: 60px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.file-system:empty::before {
+  content: '（ファイル・ディレクトリなし）';
+  color: var(--muted);
+  font-style: italic;
+}
+
+.command-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.prompt {
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.command-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 4px;
+}
+
+.command-input::placeholder {
+  color: var(--muted);
+}
+
+.command-output {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.command-output:empty {
+  display: none;
+}
+
+.terminal-footer {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.terminal-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.terminal-btn:hover {
+  transform: translateY(-1px);
+}
+
+.terminal-btn.secondary {
+  background: var(--chip);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.terminal-btn.secondary:hover {
+  background: var(--panel);
+}
+
+.command-success {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.command-error {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.file-item {
+  display: inline-block;
+  background: rgba(52, 58, 64, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 2px;
+  font-size: 12px;
+}
+
+.directory-item {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 /* ========== ボタンスタイル ========== */
