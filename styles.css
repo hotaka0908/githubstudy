@@ -642,11 +642,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--chip);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
+  margin: 16px 0;
+  padding: 12px;
 }
 
 .bomb-container {

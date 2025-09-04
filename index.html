@@ -41,6 +41,17 @@
         
         <div class="question-content">
           <h2 id="questionText">loading...</h2>
+          <!-- 鬼モード用タイマー -->
+          <div class="bomb-timer" id="bombTimer" style="display: none;">
+            <div class="bomb-container">
+              <div class="fuse-container">
+                <div class="fuse" id="fuse">
+                  <div class="spark" id="spark">💥</div>
+                </div>
+              </div>
+              <div class="bomb">💣</div>
+            </div>
+          </div>
         </div>
         
         <div class="answer-buttons" id="answerButtons">
@@ -73,16 +84,6 @@
               <span class="terminal-title">ターミナル</span>
             </div>
             <div class="terminal-body">
-              <div class="bomb-timer" id="bombTimer" style="display: none;">
-                <div class="bomb-container">
-                  <div class="fuse-container">
-                    <div class="fuse" id="fuse">
-                      <div class="spark" id="spark">💥</div>
-                    </div>
-                  </div>
-                  <div class="bomb">💣</div>
-                </div>
-              </div>
               <div class="current-directory" id="currentDirectory">~/practice</div>
               <div class="file-system" id="fileSystem"></div>
               <div class="command-line">
