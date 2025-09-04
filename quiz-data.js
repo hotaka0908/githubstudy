@@ -229,6 +229,217 @@ const QUIZ_QUESTIONS = {
         ],
         tips: '-lで詳細情報、-aで隠しファイルも表示されます。'
       }
+    },
+    // ここから鬼モード専用の追加問題（初級/中級/上級の内容を実践化）
+    {
+      id: 'd101',
+      question: 'HTML/CSS/JSの3つのファイルを一度に作成してください',
+      type: 'command',
+      expectedCommand: 'touch index.html style.css script.js',
+      expectedFiles: ['index.html', 'style.css', 'script.js'],
+      hint: 'touchコマンドは複数のファイル名を並べて指定できます',
+      explanation: {
+        title: '実践: まとめてファイル作成',
+        description: 'Web開発の基本構成ファイルを一度に用意します。',
+        usage: [
+          'touch file1 file2 ... - 複数ファイル作成'
+        ],
+        examples: [
+          'touch index.html style.css script.js'
+        ],
+        tips: 'コマンドの引数にスペース区切りで複数指定できます。'
+      }
+    },
+    {
+      id: 'd102',
+      question: 'assets と images の2つのディレクトリを作成してください',
+      type: 'command',
+      expectedCommand: 'mkdir assets images',
+      expectedFiles: ['assets/', 'images/'],
+      hint: 'mkdirはスペース区切りで複数ディレクトリを作れます',
+      explanation: {
+        title: '実践: 複数ディレクトリの作成',
+        description: 'プロジェクトの静的ファイル用フォルダを作成します。',
+        usage: [
+          'mkdir dir1 dir2 - 複数ディレクトリ作成'
+        ],
+        examples: [
+          'mkdir assets images'
+        ],
+        tips: 'スペースで複数指定します。'
+      }
+    },
+    {
+      id: 'd103',
+      question: 'README.md を README.backup.md にコピーしてください',
+      type: 'command',
+      expectedCommand: 'cp README.md README.backup.md',
+      initialFiles: ['README.md'],
+      expectedFiles: ['README.md', 'README.backup.md'],
+      hint: 'cp コピー元 コピー先 の形式です',
+      explanation: {
+        title: '実践: READMEのバックアップ作成',
+        description: '重要なファイルを別名でコピーしてバックアップします。',
+        usage: [
+          'cp source dest - ファイルコピー'
+        ],
+        examples: [
+          'cp README.md README.backup.md'
+        ],
+        tips: '元ファイルと新しいファイル名を正確に指定しましょう。'
+      }
+    },
+    {
+      id: 'd104',
+      question: 'README.md の内容を表示してください',
+      type: 'command',
+      expectedCommand: 'cat README.md',
+      initialFiles: ['README.md'],
+      hint: 'cat ファイル名 で内容を表示できます',
+      explanation: {
+        title: '実践: ファイル内容の確認',
+        description: 'READMEの内容をコマンドで素早く確認します。',
+        usage: [
+          'cat filename - ファイル内容表示'
+        ],
+        examples: [
+          'cat README.md'
+        ],
+        tips: 'ファイル名のタイポに注意。'
+      }
+    },
+    {
+      id: 'd105',
+      question: '現在のディレクトリのファイルを詳細表示で一覧してください',
+      type: 'command',
+      expectedCommand: 'ls -l',
+      initialFiles: ['app.js', 'data.json', '.env'],
+      hint: '-l オプションで詳細表示になります',
+      explanation: {
+        title: '実践: 詳細一覧',
+        description: '権限や更新日時などの詳細情報を確認します。',
+        usage: [
+          'ls -l - 詳細表示'
+        ],
+        examples: [
+          'ls -l'
+        ],
+        tips: '隠しファイルは -a と併用で表示可能。'
+      }
+    },
+    {
+      id: 'd106',
+      question: '拡張子が .json のファイルを検索してください',
+      type: 'command',
+      expectedCommand: 'find . -name "*.json"',
+      initialFiles: ['app.js', 'data.json', 'info.txt', 'config.json'],
+      hint: 'find . -name でパターン検索します（ワイルドカード *）',
+      explanation: {
+        title: '実践: JSONファイル検索',
+        description: '設定やデータ用のJSONファイルを見つけます。',
+        usage: [
+          'find . -name "*.json" - JSONファイル検索'
+        ],
+        examples: [
+          'find . -name "*.json"'
+        ],
+        tips: 'ダブルクォートでパターン全体を囲みます。'
+      }
+    },
+    {
+      id: 'd107',
+      question: 'package.json 内から "library" を含む行を表示してください',
+      type: 'command',
+      expectedCommand: 'grep "library" package.json',
+      initialFiles: ['package.json'],
+      hint: 'grep "キーワード" ファイル名 の形式で検索します',
+      explanation: {
+        title: '実践: テキスト検索',
+        description: '依存関係などの特定文字列を素早く検索します。',
+        usage: [
+          'grep "pattern" file - パターン検索'
+        ],
+        examples: [
+          'grep "library" package.json'
+        ],
+        tips: 'キーワードはクォートで囲むと安全です。'
+      }
+    },
+    {
+      id: 'd108',
+      question: 'app.js に Hello JS と書き込んでください（上書き）',
+      type: 'command',
+      expectedCommand: 'echo "Hello JS" > app.js',
+      expectedFiles: ['app.js'],
+      hint: 'echo とリダイレクト(>)の組み合わせでファイルに出力できます',
+      explanation: {
+        title: '実践: ファイルへの出力',
+        description: 'コマンドの結果をファイルに保存します。',
+        usage: [
+          'echo "text" > file - 上書き出力'
+        ],
+        examples: [
+          'echo "Hello JS" > app.js'
+        ],
+        tips: '>> は追記ですが、この問題では >（上書き）を使います。'
+      }
+    },
+    {
+      id: 'd109',
+      question: 'debug.log ファイルを削除してください',
+      type: 'command',
+      expectedCommand: 'rm debug.log',
+      initialFiles: ['debug.log', 'app.log'],
+      expectedFiles: ['app.log'],
+      hint: 'rm ファイル名 で削除します',
+      explanation: {
+        title: '実践: ログ削除',
+        description: '不要になったログファイルを安全に削除します。',
+        usage: [
+          'rm filename - ファイル削除'
+        ],
+        examples: [
+          'rm debug.log'
+        ],
+        tips: '削除は取り消せないため対象をよく確認しましょう。'
+      }
+    },
+    {
+      id: 'd110',
+      question: '現在の作業ディレクトリのパスを出力してください',
+      type: 'command',
+      expectedCommand: 'pwd',
+      hint: 'pwd でカレントディレクトリのパスを表示します',
+      explanation: {
+        title: '実践: 作業ディレクトリの確認',
+        description: '今どこにいるかを常に把握しましょう。',
+        usage: [
+          'pwd - 現在のディレクトリを表示'
+        ],
+        examples: [
+          'pwd'
+        ],
+        tips: 'パスを確認して誤操作を防ぎましょう。'
+      }
+    },
+    {
+      id: 'd111',
+      question: 'src ディレクトリに移動してください',
+      type: 'command',
+      expectedCommand: 'cd src',
+      initialFiles: ['src/'],
+      hint: 'cd ディレクトリ名 で移動します',
+      explanation: {
+        title: '実践: ディレクトリ移動',
+        description: '作業対象のディレクトリに移動します。',
+        usage: [
+          'cd dirname - 指定先へ移動'
+        ],
+        examples: [
+          'cd src'
+        ],
+        tips: '存在するディレクトリ名を指定します。'
+      }
     }
   ],
   beginner: [
