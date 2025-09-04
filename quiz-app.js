@@ -759,20 +759,62 @@ class QuizApp {
   }
   
   checkAnswer(command, question) {
-    const normalizedCommand = command.trim().toLowerCase();
-    const expectedCommand = question.expectedCommand.toLowerCase();
-    
-    // 基本的なコマンドマッチング
-    if (normalizedCommand === expectedCommand) {
+    const normalizedCommand = (command || '').trim().toLowerCase();
+    const expectedCommand = (question.expectedCommand || '').trim().toLowerCase();
+
+    // 鬼モードのコマンド問題は、可能なら実行結果（状態）で判定
+    if (this.currentLevel === 'demon' && (question.type === 'command' || expectedCommand)) {
+      const hasStateExpectations = !!(question.expectedFiles || question.expectedContent || question.expectedLocation);
+      if (hasStateExpectations) {
+        let ok = true;
+
+        // 期待されるファイル/ディレクトリの存在
+        if (ok && Array.isArray(question.expectedFiles)) {
+          for (const name of question.expectedFiles) {
+            const isDir = /\/$/.test(name);
+            const key = isDir ? name.slice(0, -1) : name;
+            const entry = this.fileSystem.get(key);
+            if (!entry) { ok = false; break; }
+            if (isDir && entry.type !== 'directory') { ok = false; break; }
+            if (!isDir && entry.type !== 'file') { ok = false; break; }
+          }
+        }
+
+        // 期待されるファイル内容
+        if (ok && question.expectedContent && typeof question.expectedContent === 'object') {
+          for (const [fname, text] of Object.entries(question.expectedContent)) {
+            const entry = this.fileSystem.get(fname);
+            if (!entry || entry.type !== 'file') { ok = false; break; }
+            if ((entry.content || '') !== text) { ok = false; break; }
+          }
+        }
+
+        // 期待されるカレントディレクトリ
+        if (ok && question.expectedLocation) {
+          const loc = this.currentDirectory || '';
+          const expectedLoc = question.expectedLocation;
+          if (!(loc.endsWith('/' + expectedLoc) || loc === expectedLoc || loc.endsWith(expectedLoc))) {
+            ok = false;
+          }
+        }
+
+        if (ok) return true;
+      }
+    }
+
+    // コマンド文字列での判定（緩めの比較）
+    const strip = (s) => s.replace(/"/g, '').replace(/\s+/g, ' ').trim();
+
+    if (strip(normalizedCommand) === strip(expectedCommand)) {
       return true;
     }
-    
+
     // 代替形式もチェック（例：ls -al と ls -la）
-    if (question.expectedCommand.includes('ls -la')) {
-      return normalizedCommand.includes('ls') && 
+    if (expectedCommand.includes('ls -la') || expectedCommand.includes('ls -al')) {
+      return normalizedCommand.includes('ls') &&
              (normalizedCommand.includes('-la') || normalizedCommand.includes('-al'));
     }
-    
+
     return false;
   }
   
