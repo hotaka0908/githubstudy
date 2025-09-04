@@ -62,6 +62,11 @@ class QuizApp {
       this.reviewLevel();
     });
     
+    // 鬼モードスタートボタン
+    document.getElementById('demonStartBtn').addEventListener('click', () => {
+      this.startDemonMode();
+    });
+    
     // 鬼モード用イベント
     document.getElementById('hintBtn').addEventListener('click', () => {
       this.showHint();
@@ -142,17 +147,19 @@ class QuizApp {
     document.getElementById('questionNumber').textContent = this.currentQuestionIndex + 1;
     document.getElementById('questionText').textContent = currentQuestion.question;
     
-    // 鬼モードの場合はコマンド入力エリアを表示
+    // 鬼モードの場合はスタート画面を表示
     const answerButtons = document.getElementById('answerButtons');
     const commandInputArea = document.getElementById('commandInputArea');
+    const demonStartArea = document.getElementById('demonStartArea');
     
     if (this.currentLevel === 'demon') {
       answerButtons.style.display = 'none';
-      commandInputArea.style.display = 'block';
-      this.setupDemonMode(currentQuestion);
+      commandInputArea.style.display = 'none';
+      demonStartArea.style.display = 'block';
     } else {
       answerButtons.style.display = 'flex';
       commandInputArea.style.display = 'none';
+      demonStartArea.style.display = 'none';
     }
     
     // カードのアニメーション
@@ -385,6 +392,17 @@ class QuizApp {
   }
   
   // 鬼モード関連メソッド
+  startDemonMode() {
+    // スタート画面を非表示にして、コマンド入力エリアを表示
+    document.getElementById('demonStartArea').style.display = 'none';
+    document.getElementById('commandInputArea').style.display = 'block';
+    
+    // 現在の問題で鬼モードをセットアップ
+    const questions = QUIZ_QUESTIONS[this.currentLevel];
+    const currentQuestion = questions[this.currentQuestionIndex];
+    this.setupDemonMode(currentQuestion);
+  }
+
   setupDemonMode(question) {
     // ファイルシステムをリセット
     this.fileSystem.clear();

@@ -567,6 +567,43 @@ body {
 }
 
 /* ========== コマンド入力エリア ========== */
+/* ========== 鬼モード スタート画面 ========== */
+.demon-start-area {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.demon-start-content {
+  background: var(--panel);
+  border: 2px solid #ff4757;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.demon-start-content h3 {
+  color: #ff4757;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.demon-start-content p {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.demon-start-content ul {
+  list-style: none;
+  margin-bottom: 28px;
+}
+
+.demon-start-content ul li {
+  margin: 8px 0;
+  color: var(--text);
+}
+
 .command-input-area {
   margin-top: 24px;
   width: 100%;
