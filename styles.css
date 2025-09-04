@@ -834,12 +834,8 @@ body {
 }
 
 .command-hint {
-  color: #f39c12;
-  font-weight: 600;
-  background: rgba(241, 196, 15, 0.1);
-  padding: 8px 12px;
-  border-radius: 6px;
-  margin: 4px 0;
+  color: var(--text);
+  font-weight: normal;
 }
 
 

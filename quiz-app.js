@@ -532,11 +532,7 @@ class QuizApp {
     // コマンドを実行
     const result = this.simulateCommand(input, currentQuestion);
     
-    if (result.output) {
-      this.addCommandOutput(result.output, result.success ? 'command-success' : 'command-error');
-    }
-    
-    // 正解判定
+    // 正解判定（コマンド実行結果表示前にチェック）
     if (result.success && this.checkAnswer(input, currentQuestion)) {
       this.stopCountdown(); // カウントダウンを停止
       
@@ -547,13 +543,19 @@ class QuizApp {
       this.progress[this.currentLevel][currentQuestion.id] = true;
       this.saveProgress();
       
+      // 正解時はコマンド実行結果を表示せず、直接正解メッセージへ
       setTimeout(() => {
-        this.addCommandOutput('✅ 正解！答えを確認して次の問題へ。', 'command-success');
-        this.showDemonAnswer(currentQuestion);
+        this.addCommandOutput('✅ 正解！次の問題へ。', 'command-success');
         setTimeout(() => {
           this.nextQuestion();
-        }, 2000);
+        }, 1500);
       }, 500);
+      return; // 早期リターンでコマンド実行結果の表示をスキップ
+    }
+    
+    // 不正解時のみコマンド実行結果を表示
+    if (result.output) {
+      this.addCommandOutput(result.output, result.success ? 'command-success' : 'command-error');
     }
     
     document.getElementById('commandInput').value = '';
@@ -736,7 +738,6 @@ class QuizApp {
       this.stopCountdown();
       
       // タイムアップメッセージ
-      this.addCommandOutput('💥 爆発！時間切れです。', 'command-error');
       
       // 進捗記録（タイムアップは「知らない」として記録）
       const questions = QUIZ_QUESTIONS[this.currentLevel];
