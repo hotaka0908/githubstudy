@@ -858,6 +858,35 @@ body {
   display: block;
 }
 
+.shuffle-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--chip);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.shuffle-btn:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: rotate(180deg) scale(1.1);
+}
+
+.shuffle-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 
 /* ========== ボタンスタイル ========== */
 .primary-btn, .secondary-btn {

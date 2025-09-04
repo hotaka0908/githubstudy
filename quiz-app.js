@@ -75,6 +75,10 @@ class QuizApp {
       this.showHint();
     });
     
+    document.getElementById('shuffleBtn').addEventListener('click', () => {
+      this.shuffleQuestions();
+    });
+    
     document.getElementById('commandInput').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         this.executeCommand();
@@ -558,6 +562,26 @@ class QuizApp {
       this.addCommandOutput(result.output, result.success ? 'command-success' : 'command-error');
     }
     
+    // 不正解時の進捗記録（コマンド入力したが間違った場合）
+    if (result.success && !this.checkAnswer(input, currentQuestion)) {
+      // 有効なコマンドだったが答えが間違っていた場合
+      if (!this.progress[this.currentLevel]) {
+        this.progress[this.currentLevel] = {};
+      }
+      this.progress[this.currentLevel][currentQuestion.id] = false;
+      this.saveProgress();
+      
+      // 不正解メッセージと答えを表示
+      setTimeout(() => {
+        this.addCommandOutput('❌ 不正解です。', 'command-error');
+        this.showDemonAnswer(currentQuestion);
+        setTimeout(() => {
+          this.nextQuestion();
+        }, 2000);
+      }, 500);
+      return;
+    }
+    
     document.getElementById('commandInput').value = '';
   }
   
@@ -667,6 +691,42 @@ class QuizApp {
       hintBtn.disabled = false;
       hintBtn.textContent = 'ヒント(del×2)';
     }, 5000);
+  }
+  
+  shuffleQuestions() {
+    // 鬼モードでのみ動作
+    if (this.currentLevel !== 'demon') return;
+    
+    // カウントダウンを停止
+    this.stopCountdown();
+    
+    // 新しい問題セットを生成（既存のbuildDemonQuestionSetを再利用）
+    this.buildDemonQuestionSet();
+    
+    // 現在の問題インデックスをリセット
+    this.currentQuestionIndex = 0;
+    
+    // 進捗をクリア（新しい問題セットなので）
+    if (this.progress[this.currentLevel]) {
+      delete this.progress[this.currentLevel];
+    }
+    this.saveProgress();
+    
+    // 問題表示を更新
+    this.showCurrentQuestion();
+    
+    // シャッフル完了メッセージ
+    this.addCommandOutput('🎲 問題をシャッフルしました！新しい10問に挑戦しましょう。', 'command-success');
+    
+    // シャッフルボタンを一時的に無効化
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    shuffleBtn.disabled = true;
+    shuffleBtn.style.opacity = '0.5';
+    
+    setTimeout(() => {
+      shuffleBtn.disabled = false;
+      shuffleBtn.style.opacity = '1';
+    }, 3000);
   }
   
   // カウントダウン機能
